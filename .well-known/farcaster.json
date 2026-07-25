@@ -1,0 +1,27 @@
+{
+  "accountAssociation": {
+    "header": "eyJmaWQiOjMzMzkzMTUsInR5cGUiOiJjdXN0b2R5Iiwia2V5IjoiMHg2RGYyOTIyRjc4OUVmMTFmNjk3NDREMEZkYWZCNDhmN2VhNjRmYTExIn0",
+    "payload": "",
+    "signature": ""
+  },
+  "miniapp": {
+    "version": "1",
+    "name": "音の箱庭",
+    "iconUrl": "https://oto-hakoniwa-web.vercel.app/icons/icon-512.png",
+    "homeUrl": "https://oto-hakoniwa-web.vercel.app/",
+    "imageUrl": "https://oto-hakoniwa-web.vercel.app/icons/fc-card-3x2.png",
+    "buttonTitle": "🎵 ひらく / Open",
+    "splashImageUrl": "https://oto-hakoniwa-web.vercel.app/icons/icon-512.png",
+    "splashBackgroundColor": "#0e1622",
+    "subtitle": "球が落ちて音を奏でる音の箱庭",
+    "description": "球が落ちて楽器の音を鳴らす、音づくりの箱庭。材質と音階を選び、ペグや板を置いて鳴りかたを工夫。完全オフライン・匿名・端末内のみ・広告なし・12言語。作った音源は CC BY-SA 4.0。",
+    "primaryCategory": "music",
+    "tags": [
+      "music",
+      "generative",
+      "sandbox",
+      "plinko",
+      "soyogi"
+    ]
+  }
+}

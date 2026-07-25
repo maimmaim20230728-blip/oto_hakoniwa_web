@@ -1,0 +1,16 @@
+{
+  "name": "音の箱庭",
+  "short_name": "音の箱庭",
+  "description": "球が落ちて楽器の音を鳴らす、音づくりの箱庭。材質と音階を選び、ペグや板を置いて、鳴りかたを工夫する。端末の中だけで動く。作った音源は CC BY-SA 4.0。",
+  "lang": "ja",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#0e1622",
+  "theme_color": "#0e1622",
+  "icons": [
+    { "src": "icons/icon-192.png", "sizes": "192x192", "type": "image/png" },
+    { "src": "icons/icon-512.png", "sizes": "512x512", "type": "image/png" }
+  ]
+}
