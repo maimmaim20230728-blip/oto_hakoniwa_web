@@ -237,6 +237,23 @@
   };
   for (var _l2 in SPLASH) { if (I18N[_l2]) { for (var _k2 in SPLASH[_l2]) { I18N[_l2][_k2] = SPLASH[_l2][_k2]; } } }
 
+  /* つくるモードの「保存(10枠)/譲渡・バックアップ用コード」のUI文言。全12言語。 */
+  var SAVEKEYS = {
+    ja: { sv_save:"保存", sv_del:"消す", sv_show:"コードを見る", sv_import:"コードで読む", sv_copy:"コピー", sv_load:"読み込む", sv_saved:"保存しました", sv_loaded:"読み込みました", sv_bad:"コードが正しくありません", sv_full:"枠がいっぱいです", sv_hint:"あいてる枠=今の盤面を保存 / 入っている枠=読み込み。コードにすれば、ゆずる・バックアップができます" },
+    en: { sv_save:"Save", sv_del:"Delete", sv_show:"Show code", sv_import:"Load code", sv_copy:"Copy", sv_load:"Load", sv_saved:"Saved", sv_loaded:"Loaded", sv_bad:"Invalid code", sv_full:"All slots are full", sv_hint:"Empty slot = save this board / filled slot = load it. Turn it into a code to share or back up." },
+    de: { sv_save:"Speichern", sv_del:"Löschen", sv_show:"Code zeigen", sv_import:"Code laden", sv_copy:"Kopieren", sv_load:"Laden", sv_saved:"Gespeichert", sv_loaded:"Geladen", sv_bad:"Ungültiger Code", sv_full:"Alle Plätze belegt", sv_hint:"Leerer Platz = dieses Brett speichern / belegt = laden. Als Code zum Teilen oder Sichern." },
+    fr: { sv_save:"Enregistrer", sv_del:"Supprimer", sv_show:"Voir le code", sv_import:"Charger un code", sv_copy:"Copier", sv_load:"Charger", sv_saved:"Enregistré", sv_loaded:"Chargé", sv_bad:"Code invalide", sv_full:"Tous les emplacements sont pleins", sv_hint:"Emplacement vide = enregistrer ce plateau / rempli = charger. En code pour partager ou sauvegarder." },
+    es: { sv_save:"Guardar", sv_del:"Borrar", sv_show:"Ver código", sv_import:"Cargar código", sv_copy:"Copiar", sv_load:"Cargar", sv_saved:"Guardado", sv_loaded:"Cargado", sv_bad:"Código no válido", sv_full:"Todos los espacios están llenos", sv_hint:"Espacio vacío = guardar este tablero / lleno = cargar. Conviértelo en código para compartir o respaldar." },
+    it: { sv_save:"Salva", sv_del:"Elimina", sv_show:"Mostra codice", sv_import:"Carica codice", sv_copy:"Copia", sv_load:"Carica", sv_saved:"Salvato", sv_loaded:"Caricato", sv_bad:"Codice non valido", sv_full:"Tutti gli spazi sono pieni", sv_hint:"Spazio vuoto = salva questo tavolo / pieno = carica. In codice per condividere o salvare." },
+    pt: { sv_save:"Salvar", sv_del:"Excluir", sv_show:"Ver código", sv_import:"Carregar código", sv_copy:"Copiar", sv_load:"Carregar", sv_saved:"Salvo", sv_loaded:"Carregado", sv_bad:"Código inválido", sv_full:"Todos os espaços estão cheios", sv_hint:"Espaço vazio = salvar este tabuleiro / cheio = carregar. Em código para compartilhar ou fazer backup." },
+    nl: { sv_save:"Opslaan", sv_del:"Verwijderen", sv_show:"Code tonen", sv_import:"Code laden", sv_copy:"Kopiëren", sv_load:"Laden", sv_saved:"Opgeslagen", sv_loaded:"Geladen", sv_bad:"Ongeldige code", sv_full:"Alle plekken zijn vol", sv_hint:"Leeg vak = dit bord opslaan / gevuld = laden. Als code om te delen of back-uppen." },
+    sv: { sv_save:"Spara", sv_del:"Ta bort", sv_show:"Visa kod", sv_import:"Läs in kod", sv_copy:"Kopiera", sv_load:"Läs in", sv_saved:"Sparat", sv_loaded:"Inläst", sv_bad:"Ogiltig kod", sv_full:"Alla platser är fulla", sv_hint:"Tom plats = spara denna bräda / fylld = läs in. Som kod för att dela eller säkerhetskopiera." },
+    ko: { sv_save:"저장", sv_del:"삭제", sv_show:"코드 보기", sv_import:"코드로 불러오기", sv_copy:"복사", sv_load:"불러오기", sv_saved:"저장했어요", sv_loaded:"불러왔어요", sv_bad:"코드가 올바르지 않아요", sv_full:"칸이 가득 찼어요", sv_hint:"빈 칸=지금 판을 저장 / 채워진 칸=불러오기. 코드로 만들면 남에게 주거나 백업할 수 있어요." },
+    zh: { sv_save:"保存", sv_del:"删除", sv_show:"查看代码", sv_import:"用代码读取", sv_copy:"复制", sv_load:"读取", sv_saved:"已保存", sv_loaded:"已读取", sv_bad:"代码无效", sv_full:"所有格子已满", sv_hint:"空格子=保存当前布局 / 已用格子=读取。做成代码即可赠送或备份。" },
+    ar: { sv_save:"حفظ", sv_del:"حذف", sv_show:"عرض الرمز", sv_import:"تحميل رمز", sv_copy:"نسخ", sv_load:"تحميل", sv_saved:"تم الحفظ", sv_loaded:"تم التحميل", sv_bad:"رمز غير صالح", sv_full:"كل الخانات ممتلئة", sv_hint:"خانة فارغة = احفظ هذا اللوح / ممتلئة = حمّله. حوّله إلى رمز للمشاركة أو النسخ الاحتياطي." }
+  };
+  for (var _l3 in SAVEKEYS) { if (I18N[_l3]) { for (var _k3 in SAVEKEYS[_l3]) { I18N[_l3][_k3] = SAVEKEYS[_l3][_k3]; } } }
+
   /* 言語コード → 自称ラベル(切替UIの表示名) */
   var LABELS = {
     ja: '日本語', en: 'English', de: 'Deutsch', fr: 'Français', es: 'Español', it: 'Italiano',

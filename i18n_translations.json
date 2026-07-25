@@ -95,7 +95,18 @@
     "cc_line2": "Please show the credit \"介護と支援の相談どころ　そよぎ\" and, when modifying or redistributing, share under the same license (ShareAlike).",
     "cc_full": "Full license text",
     "editHint": "Spout = tap to place (up to 5) and drop a test ball; tap an existing one to test it again. Peg (ellipse; equal height and width = round) / Polygon (3-8 sides) / Star / Board: tap to place, then select and drag; use the sliders for size and tilt. Eraser: tap anything to delete (drag to erase several in a row). Flow = In order / Random / Random all. Try combining polygons and stars, and find layouts that still make sound.",
-    "dev_credit": "App developed by "
+    "dev_credit": "App developed by ",
+    "sv_save": "Save",
+    "sv_del": "Delete",
+    "sv_show": "Show code",
+    "sv_import": "Load code",
+    "sv_copy": "Copy",
+    "sv_load": "Load",
+    "sv_saved": "Saved",
+    "sv_loaded": "Loaded",
+    "sv_bad": "Invalid code",
+    "sv_full": "All slots are full",
+    "sv_hint": "Empty slot = save this board / filled slot = load it. Turn it into a code to share or back up."
   },
   "de": {
     "play": "Spielen",
@@ -193,7 +204,18 @@
     "cc_line2": "Bitte: Zeige die Namensnennung „介護と支援の相談どころ　そよぎ\" an und teile bei Änderung oder Weitergabe unter derselben Lizenz (Weitergabe unter gleichen Bedingungen).",
     "cc_full": "Vollständiger Lizenztext",
     "editHint": "Auslass = zum Platzieren tippen (bis zu 5) und eine Testkugel fallen lassen; tippe einen vorhandenen an, um erneut zu testen. Pin (Ellipse; gleiche Höhe und Breite = rund) / Vieleck (3 bis 8 Ecken) / Stern / Brett: zum Platzieren tippen, dann auswählen und ziehen; mit den Reglern Größe und Neigung einstellen. Radierer: alles antippen zum Löschen (zum durchgehenden Löschen darüberziehen). Ablauf = Der Reihe nach / Zufällig / Ganz zufällig. Kombiniere Vielecke und Sterne und finde Anordnungen, die trotzdem klingen.",
-    "dev_credit": "App entwickelt von "
+    "dev_credit": "App entwickelt von ",
+    "sv_save": "Speichern",
+    "sv_del": "Löschen",
+    "sv_show": "Code zeigen",
+    "sv_import": "Code laden",
+    "sv_copy": "Kopieren",
+    "sv_load": "Laden",
+    "sv_saved": "Gespeichert",
+    "sv_loaded": "Geladen",
+    "sv_bad": "Ungültiger Code",
+    "sv_full": "Alle Plätze belegt",
+    "sv_hint": "Leerer Platz = dieses Brett speichern / belegt = laden. Als Code zum Teilen oder Sichern."
   },
   "fr": {
     "play": "Jouer",
@@ -291,7 +313,18 @@
     "cc_line2": "Merci d'afficher le crédit 「介護と支援の相談どころ　そよぎ」 et, en cas de modification ou de redistribution, de partager sous la même licence (Partage dans les mêmes conditions).",
     "cc_full": "Texte complet de la licence",
     "editHint": "Sortie = touchez pour placer (5 max) et lâcher une bille d'essai ; touchez une sortie existante pour la retester. Picot (ellipse ; hauteur = largeur pour un rond) / Polygone (3 à 8 côtés) / Étoile / Planche : touchez pour placer, puis sélectionnez et faites glisser ; réglez la taille et l'inclinaison avec les curseurs. Gomme : touchez n'importe quel élément pour l'effacer (glissez pour effacer en continu). Enchaînement = En ordre / Aléatoire / Tout aléatoire. Assemblez des polygones et des étoiles, et trouvez des dispositions qui sonnent quand même.",
-    "dev_credit": "Application développée par "
+    "dev_credit": "Application développée par ",
+    "sv_save": "Enregistrer",
+    "sv_del": "Supprimer",
+    "sv_show": "Voir le code",
+    "sv_import": "Charger un code",
+    "sv_copy": "Copier",
+    "sv_load": "Charger",
+    "sv_saved": "Enregistré",
+    "sv_loaded": "Chargé",
+    "sv_bad": "Code invalide",
+    "sv_full": "Tous les emplacements sont pleins",
+    "sv_hint": "Emplacement vide = enregistrer ce plateau / rempli = charger. En code pour partager ou sauvegarder."
   },
   "es": {
     "play": "Jugar",
@@ -389,7 +422,18 @@
     "cc_line2": "Te pedimos: muestra el crédito 「介護と支援の相談どころ　そよぎ」 y, al modificar o redistribuir, compártelo bajo la misma licencia (CompartirIgual).",
     "cc_full": "Texto completo de la licencia",
     "editHint": "«Salida» = toca para colocar (hasta 5) y soltar una bola de prueba; toca una ya puesta para volver a probar. Clavija (elipse; alto igual a ancho = redonda) / Polígono (3 a 8 lados) / Estrella / Tabla: toca para colocar, luego selecciona y arrastra; usa los deslizadores para el tamaño y la inclinación. Borrador: toca cualquier cosa para borrar (arrastra para borrar de forma continua). Flujo = En orden / Aleatorio / Aleatorio total. Combina polígonos y estrellas y busca disposiciones que aun así suenen.",
-    "dev_credit": "App desarrollada por "
+    "dev_credit": "App desarrollada por ",
+    "sv_save": "Guardar",
+    "sv_del": "Borrar",
+    "sv_show": "Ver código",
+    "sv_import": "Cargar código",
+    "sv_copy": "Copiar",
+    "sv_load": "Cargar",
+    "sv_saved": "Guardado",
+    "sv_loaded": "Cargado",
+    "sv_bad": "Código no válido",
+    "sv_full": "Todos los espacios están llenos",
+    "sv_hint": "Espacio vacío = guardar este tablero / lleno = cargar. Conviértelo en código para compartir o respaldar."
   },
   "it": {
     "play": "Gioca",
@@ -487,7 +531,18 @@
     "cc_line2": "Ti chiediamo: mostra il credito 「介護と支援の相談どころ　そよぎ」 e, in caso di modifica o ridistribuzione, condividi con la stessa licenza (Condividi allo stesso modo).",
     "cc_full": "Testo completo della licenza",
     "editHint": "Bocchetta = tocca per posizionarla (max 5) e far cadere una pallina di prova; tocca una bocchetta esistente per riprovare. Piolo (ellisse; altezza = larghezza per un tondo) / Poligono (da 3 a 8 lati) / Stella / Barra si posizionano toccando, poi seleziona e trascina; con i cursori regoli dimensione e inclinazione. La gomma cancella tutto con un tocco (trascina per cancellare di seguito). Flusso = In ordine / Casuale / Tutto casuale. Prova a comporre poligoni e stelle e trova la disposizione che li faccia comunque suonare.",
-    "dev_credit": "App sviluppata da "
+    "dev_credit": "App sviluppata da ",
+    "sv_save": "Salva",
+    "sv_del": "Elimina",
+    "sv_show": "Mostra codice",
+    "sv_import": "Carica codice",
+    "sv_copy": "Copia",
+    "sv_load": "Carica",
+    "sv_saved": "Salvato",
+    "sv_loaded": "Caricato",
+    "sv_bad": "Codice non valido",
+    "sv_full": "Tutti gli spazi sono pieni",
+    "sv_hint": "Spazio vuoto = salva questo tavolo / pieno = carica. In codice per condividere o salvare."
   },
   "pt": {
     "play": "Tocar",
@@ -585,7 +640,18 @@
     "cc_line2": "Pedimos: mostre o crédito \"介護と支援の相談どころ　そよぎ\" e, ao modificar ou redistribuir, compartilhe sob a mesma licença (CompartilhaIgual).",
     "cc_full": "Texto completo da licença",
     "editHint": "Saída = toque para colocar (até 5) e soltar uma bola de teste; toque em uma já existente para testar de novo. Pino (elipse; altura e largura iguais = redondo) / Polígono (3 a 8 lados) / Estrela / Placa: toque para colocar, depois selecione e arraste; use os controles deslizantes para o tamanho e a inclinação. Borracha: toque em qualquer coisa para apagar (arraste para apagar em sequência). Fluxo = Em ordem / Aleatório / Aleatório total. Combine polígonos e estrelas e descubra arranjos que ainda assim produzam som.",
-    "dev_credit": "App desenvolvido por "
+    "dev_credit": "App desenvolvido por ",
+    "sv_save": "Salvar",
+    "sv_del": "Excluir",
+    "sv_show": "Ver código",
+    "sv_import": "Carregar código",
+    "sv_copy": "Copiar",
+    "sv_load": "Carregar",
+    "sv_saved": "Salvo",
+    "sv_loaded": "Carregado",
+    "sv_bad": "Código inválido",
+    "sv_full": "Todos os espaços estão cheios",
+    "sv_hint": "Espaço vazio = salvar este tabuleiro / cheio = carregar. Em código para compartilhar ou fazer backup."
   },
   "nl": {
     "play": "Spelen",
@@ -683,7 +749,18 @@
     "cc_line2": "Verzoek: vermeld de credit 「介護と支援の相談どころ　そよぎ」 en deel bij aanpassing of herdistributie onder dezelfde licentie (GelijkDelen).",
     "cc_full": "Volledige licentietekst",
     "editHint": "Valopening = tik om te plaatsen (max. 5) en laat een testbal vallen; tik op een bestaande om opnieuw te testen. Pen (ellips; gelijke hoogte en breedte = rond) / Veelhoek (3 tot 8 hoeken) / Ster / Plank: tik om te plaatsen, selecteer daarna en sleep; gebruik de schuiven voor grootte en helling. Gum: tik op iets om het te wissen (sleep om door te blijven wissen). Verloop = Op volgorde / Willekeurig / Overal willekeurig. Combineer veelhoeken en sterren en zoek opstellingen die tóch geluid maken.",
-    "dev_credit": "App ontwikkeld door "
+    "dev_credit": "App ontwikkeld door ",
+    "sv_save": "Opslaan",
+    "sv_del": "Verwijderen",
+    "sv_show": "Code tonen",
+    "sv_import": "Code laden",
+    "sv_copy": "Kopiëren",
+    "sv_load": "Laden",
+    "sv_saved": "Opgeslagen",
+    "sv_loaded": "Geladen",
+    "sv_bad": "Ongeldige code",
+    "sv_full": "Alle plekken zijn vol",
+    "sv_hint": "Leeg vak = dit bord opslaan / gevuld = laden. Als code om te delen of back-uppen."
   },
   "sv": {
     "play": "Spela",
@@ -781,7 +858,18 @@
     "cc_line2": "En önskan: visa krediteringen ”介護と支援の相談どころ　そよぎ” och dela under samma licens (DelaLika) när du ändrar eller vidaredistribuerar.",
     "cc_full": "Fullständig licenstext",
     "editHint": "Utlopp = tryck för att placera (max 5) och släpp en testboll, tryck på ett befintligt för att testa igen. Pinne (ellips, lika höjd och bredd = rund) / Polygon (3-8 hörn) / Stjärna / Platta: tryck för att placera, markera sedan och dra, använd reglagen för storlek och lutning. Radera: tryck på vad som helst för att ta bort (dra för att radera i följd). Flöde = I ordning / Slumpvis / Slump överallt. Kombinera polygoner och stjärnor och hitta placeringar som ändå ger ljud.",
-    "dev_credit": "Appen är utvecklad av "
+    "dev_credit": "Appen är utvecklad av ",
+    "sv_save": "Spara",
+    "sv_del": "Ta bort",
+    "sv_show": "Visa kod",
+    "sv_import": "Läs in kod",
+    "sv_copy": "Kopiera",
+    "sv_load": "Läs in",
+    "sv_saved": "Sparat",
+    "sv_loaded": "Inläst",
+    "sv_bad": "Ogiltig kod",
+    "sv_full": "Alla platser är fulla",
+    "sv_hint": "Tom plats = spara denna bräda / fylld = läs in. Som kod för att dela eller säkerhetskopiera."
   },
   "ko": {
     "play": "플레이",
@@ -879,7 +967,18 @@
     "cc_line2": "부탁드려요: 크레딧 「介護と支援の相談どころ　そよぎ」를 표시해 주시고, 변경하거나 재배포할 때는 같은 라이선스(동일조건변경허락)로 공유해 주세요.",
     "cc_full": "라이선스 전문",
     "editHint": "「배출구」＝탭해서 설치(최대 5개)하고 시험 삼아 공을 떨어뜨려요. 기존 것을 탭하면 다시 테스트. 페그(타원·세로=가로면 원형)/다각형(각 수 3~8)/별/판은 탭해서 놓은 뒤 선택해서 드래그하고, 슬라이더로 크기나 기울기를 조절해요. 지우개는 아무거나 탭하면 삭제(문지르면 연속으로도). 흐름＝순서대로/랜덤/전체 랜덤. 다각형이나 별을 조합해서, 그래도 소리가 나는 배치를 궁리해 보세요.",
-    "dev_credit": "앱 개발: "
+    "dev_credit": "앱 개발: ",
+    "sv_save": "저장",
+    "sv_del": "삭제",
+    "sv_show": "코드 보기",
+    "sv_import": "코드로 불러오기",
+    "sv_copy": "복사",
+    "sv_load": "불러오기",
+    "sv_saved": "저장했어요",
+    "sv_loaded": "불러왔어요",
+    "sv_bad": "코드가 올바르지 않아요",
+    "sv_full": "칸이 가득 찼어요",
+    "sv_hint": "빈 칸=지금 판을 저장 / 채워진 칸=불러오기. 코드로 만들면 남에게 주거나 백업할 수 있어요."
   },
   "zh": {
     "play": "玩",
@@ -977,7 +1076,18 @@
     "cc_line2": "恳请：标注署名「介護と支援の相談どころ　そよぎ」，并在修改或再分发时以相同的许可（相同方式共享）进行共享。",
     "cc_full": "许可证全文",
     "editHint": "「落球口」＝点按放置（最多5个）并试落小球，点按已有的可重新测试。圆钉（椭圆，高=宽时为圆）/多边形（边数3〜8）/星形/挡板：点按放置→选中后拖动，用滑块调整大小和倾斜。橡皮擦：点按任意物体删除（拖动可连续擦除）。流程＝依次/随机/全屏随机。试着组合多边形和星形，找出仍能发出声音的布局吧。",
-    "dev_credit": "应用开发："
+    "dev_credit": "应用开发：",
+    "sv_save": "保存",
+    "sv_del": "删除",
+    "sv_show": "查看代码",
+    "sv_import": "用代码读取",
+    "sv_copy": "复制",
+    "sv_load": "读取",
+    "sv_saved": "已保存",
+    "sv_loaded": "已读取",
+    "sv_bad": "代码无效",
+    "sv_full": "所有格子已满",
+    "sv_hint": "空格子=保存当前布局 / 已用格子=读取。做成代码即可赠送或备份。"
   },
   "ar": {
     "play": "لعب",
@@ -1075,6 +1185,17 @@
     "cc_line2": "رجاءً: اعرض حقوق النَّسب 「介護と支援の相談どころ　そよぎ」، وعند التعديل أو إعادة التوزيع شارِكها بالترخيص نفسه (الترخيص بالمثل).",
     "cc_full": "النص الكامل للرخصة",
     "editHint": "«فتحة الإسقاط» = انقر للإضافة (حتى 5) مع إسقاط كرة تجريبية، وانقر على واحدة موجودة لإعادة الاختبار. الوتد (بيضاوي؛ عندما يتساوى الطول مع العرض يصبح دائرياً) / المضلّع (عدد الأضلاع من 3 إلى 8) / النجمة / اللوح: انقر لوضعها ثم اخترها واسحبها، واستخدم أشرطة التمرير لضبط الحجم والميل. الممحاة: انقر على أي شيء لمسحه (اسحب للمسح المتواصل). التدفّق = بالترتيب / عشوائي / عشوائي كلّي. جرّب تركيب المضلّعات والنجوم وابتكر ترتيباً يظل يُصدر الصوت.",
-    "dev_credit": "تطوير التطبيق: "
+    "dev_credit": "تطوير التطبيق: ",
+    "sv_save": "حفظ",
+    "sv_del": "حذف",
+    "sv_show": "عرض الرمز",
+    "sv_import": "تحميل رمز",
+    "sv_copy": "نسخ",
+    "sv_load": "تحميل",
+    "sv_saved": "تم الحفظ",
+    "sv_loaded": "تم التحميل",
+    "sv_bad": "رمز غير صالح",
+    "sv_full": "كل الخانات ممتلئة",
+    "sv_hint": "خانة فارغة = احفظ هذا اللوح / ممتلئة = حمّله. حوّله إلى رمز للمشاركة أو النسخ الاحتياطي."
   }
 }

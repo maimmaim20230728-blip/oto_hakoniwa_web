@@ -252,6 +252,29 @@
           <button class="chip g" id="resetBtn" data-i18n="reset" style="flex:1 1 92px">自動配置に戻す</button>
         </div>
       </div>
+      <div class="row">
+        <span class="lbl" data-i18n="sv_save">保存</span>
+        <div class="seg" id="slotSeg"></div>
+      </div>
+      <div class="row">
+        <span class="lbl"></span>
+        <div class="seg">
+          <button class="chip" id="slotDelBtn" data-i18n="sv_del" style="flex:1 1 60px">消す</button>
+          <button class="chip" id="codeShowBtn" data-i18n="sv_show" style="flex:1 1 100px">コードを見る</button>
+          <button class="chip" id="codeImportBtn" data-i18n="sv_import" style="flex:1 1 100px">コードで読む</button>
+        </div>
+      </div>
+      <div id="codeBox" style="display:none">
+        <div class="row" style="margin-top:2px">
+          <textarea id="codeArea" rows="2" spellcheck="false" style="flex:1; min-width:0; background:#0e1622; color:var(--shiro); border:1px solid #2b3b4d; border-radius:8px; padding:6px 8px; font-size:11px; resize:none; word-break:break-all;"></textarea>
+        </div>
+        <div class="row">
+          <button class="chip g" id="codeCopyBtn" data-i18n="sv_copy" style="flex:1 1 72px">コピー</button>
+          <button class="chip g" id="codeLoadBtn" data-i18n="sv_load" style="flex:1 1 72px">読み込む</button>
+          <span class="val" id="codeMsg" style="flex:1; text-align:left; width:auto; color:var(--midori)"></span>
+        </div>
+      </div>
+      <div class="hint" data-i18n="sv_hint" style="margin-top:3px"></div>
       <div class="hint" data-i18n="editHint">「落とし口」＝タップで設置(最大5)＋試し落下、既存タップで再テスト。ペグ(楕円・たて=よこで丸)/多角形(角数3〜8)/星/板はタップで置く→選んでドラッグ・スライダーで大きさや傾き。消しゴムは全部タップで消去(なぞって連続も)。流れ＝順番/ランダム/全体ランダム。多角形や星を組んで、それでも鳴る配置を工夫しよう。</div>
     </div>
   </div>
@@ -701,7 +724,7 @@
     if(selected.y<4) selected.y=4; if(selected.y>H-4) selected.y=H-4;
     assignNote(selected);
   }
-  function editPointerUp(){ dragging=false; }
+  function editPointerUp(){ dragging=false; if(editMode) saveWip(); }
   function setMode(m){
     editMode=(m==='edit');
     document.getElementById('playPanel').style.display = editMode?'none':'';
@@ -1061,6 +1084,69 @@
     barStart=ctx.currentTime;
   }
 
+  // ========== つくった盤面の 保存(10枠) / 譲渡・バックアップコード / 作りかけ自動保持 ==========
+  var SLOT_KEY='oto_slots', WIP_KEY='oto_wip', SLOT_N=10, slotDelMode=false;
+  function r1(v){ return Math.round(v*10)/10; }
+  function r3(v){ return Math.round(v*1000)/1000; }
+  function serializeBoard(){
+    var hh=H||432;
+    return { v:1, s:scaleName, m:material, f:flowMode,
+      sp: spouts.map(function(x){ return r1(x); }),
+      b: boards.map(function(ob){
+        var x=r1(ob.x), yn=Math.round((ob.y/hh)*10000)/10000;
+        if(ob.t==='board') return [1, x, yn, r1(ob.len), r3(ob.ang), r1(ob.th)];
+        if(ob.t==='poly') return [ob.star?3:2, x, yn, r1(ob.r), r3(ob.rot), ob.sides];
+        return [0, x, yn, r1(ob.rx), r1(ob.ry), r3(ob.rot)];
+      }) };
+  }
+  function syncSettingUI(){
+    function setOn(seg, attr, val){ var bs=document.querySelectorAll('#'+seg+' button'); for(var i=0;i<bs.length;i++){ bs[i].classList.toggle('on', bs[i].getAttribute(attr)===val); } }
+    setOn('scaleSeg','data-scale',scaleName); setOn('matSeg','data-mat',material); setOn('flowSeg','data-flow',flowMode);
+  }
+  function applyBoard(o){
+    if(!o || o.v!==1 || !(o.b instanceof Array)) return false;
+    if(o.s && SCALES[o.s]) scaleName=o.s;
+    if(o.m && MATERIALS[o.m]) material=o.m;
+    if(o.f && (o.f==='order'||o.f==='rand'||o.f==='randall')) flowMode=o.f;
+    notePool=buildNotePool(); pool14=notePool.slice(0,14);
+    var hh=H||432; boards=[];
+    for(var i=0;i<o.b.length;i++){
+      var a=o.b[i], t=a[0], x=+a[1], y=(+a[2])*hh, ob;
+      if(t===1) ob={t:'board', x:x, y:y, len:+a[3], ang:+a[4], th:+a[5], note:0, glow:0, cd:0};
+      else if(t===2||t===3){ ob={t:'poly', x:x, y:y, r:+a[3], rot:+a[4], sides:(+a[5])|0, star:(t===3), note:0, glow:0, cd:0}; rebuildPoly(ob); }
+      else ob={t:'peg', x:x, y:y, rx:+a[3], ry:+a[4], rot:+a[5], note:0, glow:0, cd:0};
+      assignNote(ob); boards.push(ob);
+    }
+    spouts=((o.sp instanceof Array)?o.sp:[]).slice(0,5).map(Number);
+    spoutIdx=0; selected=null; balls=[];
+    syncSettingUI();
+    if(eSizeRow && editMode) configureSliders(activeTargetKind());
+    return true;
+  }
+  function b64(o){ try{ return btoa(unescape(encodeURIComponent(JSON.stringify(o)))); }catch(e){ return ''; } }
+  function unb64(s){ try{ return JSON.parse(decodeURIComponent(escape(atob((s||'').trim())))); }catch(e){ return null; } }
+  function loadSlots(){ try{ var a=JSON.parse(localStorage.getItem(SLOT_KEY)); if(a instanceof Array){ a.length=SLOT_N; return a; } }catch(e){} var z=[]; for(var i=0;i<SLOT_N;i++) z.push(null); return z; }
+  function saveSlots(a){ try{ localStorage.setItem(SLOT_KEY, JSON.stringify(a)); }catch(e){} }
+  function renderSlots(){
+    var seg=document.getElementById('slotSeg'); if(!seg) return;
+    var a=loadSlots(); seg.innerHTML='';
+    for(var i=0;i<SLOT_N;i++){
+      var btn=document.createElement('button'); btn.className='chip'+(a[i]?' on':'');
+      btn.setAttribute('data-slot', i); btn.style.cssText='flex:1 1 calc(20% - 3.2px); min-width:0; padding:8px 2px; font-size:12px;';
+      btn.textContent=(a[i]?'● ':'')+(i+1);
+      seg.appendChild(btn);
+    }
+  }
+  function flashMsg(k){ var el=document.getElementById('codeMsg'); if(!el) return; el.textContent=(window.OtoI18n?OtoI18n.t(k):k); clearTimeout(el._t); el._t=setTimeout(function(){ el.textContent=''; }, 2500); }
+  function onSlot(i){
+    var a=loadSlots();
+    if(slotDelMode){ if(a[i]){ a[i]=null; saveSlots(a); renderSlots(); } return; }
+    if(a[i]){ var o=unb64(a[i].c); if(o && applyBoard(o)){ saveWip(); flashMsg('sv_loaded'); } else flashMsg('sv_bad'); }
+    else { a[i]={ c:b64(serializeBoard()) }; saveSlots(a); renderSlots(); flashMsg('sv_saved'); }
+  }
+  function saveWip(){ try{ localStorage.setItem(WIP_KEY, b64(serializeBoard())); }catch(e){} }
+  function restoreWip(){ try{ var s=localStorage.getItem(WIP_KEY); if(s){ var o=unb64(s); if(o) applyBoard(o); } }catch(e){} }
+
   window.addEventListener("load", function(){
     eSize=document.getElementById("eSize"); eHt=document.getElementById("eHt"); eTilt=document.getElementById("eTilt");
     eSizeVal=document.getElementById("eSizeVal"); eHtVal=document.getElementById("eHtVal"); eTiltVal=document.getElementById("eTiltVal");
@@ -1096,11 +1182,11 @@
 
     document.getElementById("snapBtn").addEventListener("click", function(){ snap=!snap; this.classList.toggle("on",snap); });
     document.getElementById("delBtn").addEventListener("click", function(){
-      if(selected){ var i=boards.indexOf(selected); if(i>=0) boards.splice(i,1); selected=null; configureSliders(activeTargetKind()); }
+      if(selected){ var i=boards.indexOf(selected); if(i>=0) boards.splice(i,1); selected=null; configureSliders(activeTargetKind()); saveWip(); }
     });
-    document.getElementById("resetBtn").addEventListener("click", function(){ buildBoards(); selected=null; });
-    seg("flowSeg","data-flow", function(v){ flowMode=v; spoutIdx=0; });
-    document.getElementById("clearAllBtn").addEventListener("click", function(){ boards=[]; spouts=[]; selected=null; spoutIdx=0; configureSliders(activeTargetKind()); });
+    document.getElementById("resetBtn").addEventListener("click", function(){ buildBoards(); selected=null; saveWip(); });
+    seg("flowSeg","data-flow", function(v){ flowMode=v; spoutIdx=0; saveWip(); });
+    document.getElementById("clearAllBtn").addEventListener("click", function(){ boards=[]; spouts=[]; selected=null; spoutIdx=0; configureSliders(activeTargetKind()); saveWip(); });
 
     seg("matSeg","data-mat", function(v){ material=v; });
     seg("scaleSeg","data-scale", function(v){ scaleName=v; repitchBoards(); });
@@ -1111,6 +1197,34 @@
     var volEl=document.getElementById("vol");
     volEl.addEventListener("input", function(){ volume=this.value/100; document.getElementById("volVal").textContent=this.value; if(master) master.gain.setTargetAtTime(volume, ctx.currentTime, 0.05); });
     if(window.OtoRec) OtoRec.init();   // 録音UIの配線
+
+    // つくった盤面: 作りかけの自動復元 + 10枠保存 + 譲渡/バックアップコード
+    restoreWip();
+    renderSlots();
+    document.getElementById("slotSeg").addEventListener("click", function(e){
+      var t=e.target.closest("button"); if(!t) return; onSlot(+t.getAttribute("data-slot"));
+    });
+    document.getElementById("slotDelBtn").addEventListener("click", function(){ slotDelMode=!slotDelMode; this.classList.toggle("on",slotDelMode); });
+    document.getElementById("codeShowBtn").addEventListener("click", function(){
+      var box=document.getElementById("codeBox"), ta=document.getElementById("codeArea");
+      box.style.display=""; ta.value=b64(serializeBoard()); ta.focus(); ta.select();
+    });
+    document.getElementById("codeImportBtn").addEventListener("click", function(){
+      var box=document.getElementById("codeBox"), ta=document.getElementById("codeArea");
+      box.style.display=""; ta.value=""; ta.focus();
+    });
+    document.getElementById("codeCopyBtn").addEventListener("click", function(){
+      var ta=document.getElementById("codeArea"); ta.select();
+      try{ document.execCommand("copy"); }catch(e){}
+      if(navigator.clipboard){ navigator.clipboard.writeText(ta.value).catch(function(){}); }
+      flashMsg("sv_copy");
+    });
+    document.getElementById("codeLoadBtn").addEventListener("click", function(){
+      var ta=document.getElementById("codeArea"); var o=unb64(ta.value);
+      if(o && applyBoard(o)){ saveWip(); flashMsg("sv_loaded"); } else { flashMsg("sv_bad"); }
+    });
+    document.addEventListener("visibilitychange", function(){ if(document.visibilityState==="hidden" && editMode) saveWip(); });
+    window.addEventListener("pagehide", function(){ if(editMode) saveWip(); });
 
     // 言語切替時: 静的ラベルは i18n.js が更新。動的ラベル(スライダー)と録音の秒表示はここで作り直す
     var langSel=document.getElementById("otoLangSelect");
