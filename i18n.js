@@ -254,6 +254,15 @@
   };
   for (var _l3 in SAVEKEYS) { if (I18N[_l3]) { for (var _k3 in SAVEKEYS[_l3]) { I18N[_l3][_k3] = SAVEKEYS[_l3][_k3]; } } }
 
+  /* 起動後にタイトル(言語設定)へ戻るボタン。全12言語。 */
+  var MOREKEYS = {
+    ja:{ backTitle:"タイトルに戻る" }, en:{ backTitle:"Back to title" }, de:{ backTitle:"Zum Titel" },
+    fr:{ backTitle:"Au titre" }, es:{ backTitle:"Al título" }, it:{ backTitle:"Al titolo" },
+    pt:{ backTitle:"Ao título" }, nl:{ backTitle:"Naar titel" }, sv:{ backTitle:"Till titeln" },
+    ko:{ backTitle:"타이틀로" }, zh:{ backTitle:"返回标题" }, ar:{ backTitle:"إلى العنوان" }
+  };
+  for (var _l4 in MOREKEYS) { if (I18N[_l4]) { for (var _k4 in MOREKEYS[_l4]) { I18N[_l4][_k4] = MOREKEYS[_l4][_k4]; } } }
+
   /* 言語コード → 自称ラベル(切替UIの表示名) */
   var LABELS = {
     ja: '日本語', en: 'English', de: 'Deutsch', fr: 'Français', es: 'Español', it: 'Italiano',

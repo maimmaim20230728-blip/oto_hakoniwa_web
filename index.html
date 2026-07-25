@@ -35,7 +35,7 @@
     radial-gradient(120% 90% at 50% 0%, #17324a 0%, #0e1622 60%);}
   #startOverlay{position:absolute; inset:0; display:flex; flex-direction:column;
     align-items:center; justify-content:center; gap:16px; background:rgba(8,14,22,.86);
-    cursor:pointer; text-align:center; padding:20px 20px 52px;}
+    cursor:pointer; text-align:center; padding:20px 20px 108px;}
   /* タイトルはアイコンと同じ白→水色グラデの白抜き＋淡い発光で存在感を出す */
   #startOverlay h2{margin:4px 0 2px; font-size:46px; font-weight:800; letter-spacing:.06em; color:#eaf9ff;
     filter:drop-shadow(0 2px 12px rgba(79,195,232,.42));}
@@ -47,9 +47,10 @@
     padding:16px 36px; border-radius:40px; font-size:20px;}
   #startOverlay small{color:#9fb4c6; font-size:14.5px; line-height:1.8;}
   #startOverlay small b{font-size:17px; color:var(--shiro);}
-  /* ⇧盤面エリア最下部の開発クレジット + HP */
-  #startCredit{position:absolute; left:16px; right:16px; bottom:12px; text-align:center;
-    font-size:11.5px; line-height:1.75; color:#8296a8;}
+  /* 起動画面の最下部: 言語切替 + 開発クレジット */
+  #startBottom{position:absolute; left:16px; right:16px; bottom:12px; display:flex; flex-direction:column; align-items:center; gap:10px;}
+  #startLang{width:100%; max-width:240px; display:flex;}
+  #startCredit{text-align:center; font-size:11.5px; line-height:1.75; color:#8296a8;}
   #startCredit a{color:var(--mizu); text-decoration:underline; text-underline-offset:2px; word-break:break-word;}
   #controls{padding:8px 10px 12px; background:var(--panel); border-top:1px solid #22303f;
     flex:4; min-height:0; overflow-y:auto;}
@@ -88,22 +89,22 @@
         <b data-i18n="startSub">音を出す</b><br>
         <span data-i18n="startNote">ヘッドフォン推奨。「遊ぶ」で画面タップ＝球が落ちて音が鳴る。「つくる」でペグや板を自由に置けます。</span>
       </small>
-      <div id="startCredit">
-        <span data-i18n="dev_credit">アプリ開発:</span><a href="https://soyogi.hp.peraichi.com/top" target="_blank" rel="noopener" onclick="event.stopPropagation()">介護と支援の相談どころ　そよぎ</a>
+      <div id="startBottom">
+        <div id="startLang" data-oto-langhost></div>
+        <div id="startCredit">
+          <span data-i18n="dev_credit">アプリ開発:</span><a href="https://soyogi.hp.peraichi.com/top" target="_blank" rel="noopener" onclick="event.stopPropagation()">介護と支援の相談どころ　そよぎ</a>
+        </div>
       </div>
     </div>
   </div>
   <div id="controls">
-    <div class="row">
-      <span class="lbl" data-i18n="lang">言語</span>
-      <div class="seg" id="langHost" data-oto-langhost></div>
-    </div>
-    <div class="row">
-      <span class="lbl" data-i18n="mode">モード</span>
-      <div class="seg" id="modeSeg">
-        <button class="chip on" data-mode="play" data-i18n="play">遊ぶ</button>
-        <button class="chip" data-mode="edit" data-i18n="edit">つくる</button>
+    <div class="row" style="flex-wrap:nowrap">
+      <span class="lbl" data-i18n="mode" style="width:38px; flex:0 0 38px">モード</span>
+      <div class="seg" id="modeSeg" style="flex:2 1 0; min-width:0; flex-wrap:nowrap">
+        <button class="chip on" data-mode="play" data-i18n="play" style="min-width:0; padding-left:3px; padding-right:3px">遊ぶ</button>
+        <button class="chip" data-mode="edit" data-i18n="edit" style="min-width:0; padding-left:3px; padding-right:3px">つくる</button>
       </div>
+      <button class="chip g" id="backTitleBtn" data-i18n="backTitle" style="flex:1 1 0; min-width:0; padding-left:3px; padding-right:3px">タイトルに戻る</button>
     </div>
 
     <div id="playPanel">
@@ -1078,11 +1079,10 @@
   }
 
   function start(){
-    if(started) return;
-    initAudio(); started=true;
-    document.getElementById("startOverlay").style.display="none";
-    barStart=ctx.currentTime;
+    if(!started){ initAudio(); started=true; barStart=ctx.currentTime; }
+    document.getElementById("startOverlay").style.display="none";   // 起動後もはじめる=常にオーバーレイを閉じる
   }
+  function backToTitle(){ document.getElementById("startOverlay").style.display=""; }   // 言語変更等のためタイトルへ戻る
 
   // ========== つくった盤面の 保存(10枠) / 譲渡・バックアップコード / 作りかけ自動保持 ==========
   var SLOT_KEY='oto_slots', WIP_KEY='oto_wip', SLOT_N=10, slotDelMode=false;
@@ -1158,6 +1158,8 @@
     requestAnimationFrame(frame);
 
     document.getElementById("startOverlay").addEventListener("click", start);
+    document.getElementById("backTitleBtn").addEventListener("click", backToTitle);
+    document.getElementById("startBottom").addEventListener("click", function(e){ e.stopPropagation(); });  // 言語select/クレジットの操作で誤って開始させない
 
     var cv=document.getElementById("cv");
     cv.addEventListener("pointerdown", function(e){
