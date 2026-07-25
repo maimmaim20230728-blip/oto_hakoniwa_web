@@ -441,6 +441,11 @@
       }
     }
   }
+  // 音階だけ変えた時: 作った盤面(ギミック)はそのままに、音域と各障害物の音程だけ更新(初期化しない)
+  function repitchBoards(){
+    notePool=buildNotePool(); pool14=notePool.slice(0,14);
+    for(var i=0;i<boards.length;i++){ assignNote(boards[i]); }
+  }
   function dropBall(px){
     if(!started) return;
     if(balls.length>60) return;
@@ -467,6 +472,15 @@
       var n=ob.sides;
       for(i=0;i<n;i++){ ang=ob.rot - Math.PI/2 + i*2*Math.PI/n; ob.lpts.push(Math.cos(ang)*ob.r, Math.sin(ang)*ob.r); }
     }
+  }
+  // 点(px,py)が多角形/星の内側か(レイキャスト・lptsはob中心相対)
+  function pointInPoly(px, py, ob){
+    var p=ob.lpts, m=p.length>>1, x=px-ob.x, y=py-ob.y, inside=false;
+    for(var i=0, j=m-1; i<m; j=i++){
+      var xi=p[2*i], yi=p[2*i+1], xj=p[2*j], yj=p[2*j+1];
+      if(((yi>y)!==(yj>y)) && (x < (xj-xi)*(y-yi)/(yj-yi)+xi)) inside=!inside;
+    }
+    return inside;
   }
   // ---------- 衝突判定（楕円ペグ / 太さ付き板 / 多角形・星）----------
   function obstacleHit(b, ob){
@@ -495,6 +509,11 @@
         if(dd<bestD){ bestD=dd; bnx=ddx; bny=ddy; }
       }
       bestD=Math.sqrt(bestD);
+      // 球が多角形/星の内側に入り込んだら、中心から外周へ放出して閉じ込めを防ぐ
+      if(pointInPoly(b.x, b.y, ob)){
+        var dcx=b.x-ob.x, dcy=b.y-ob.y, dc=Math.sqrt(dcx*dcx+dcy*dcy)||1e-4;
+        return {nx:dcx/dc, ny:dcy/dc, pen:(ob.r+b.r)-dc};
+      }
       if(bestD>=b.r || bestD<1e-4) return null;
       return {nx:bnx/bestD, ny:bny/bestD, pen:b.r-bestD};
     } else {
@@ -1084,7 +1103,7 @@
     document.getElementById("clearAllBtn").addEventListener("click", function(){ boards=[]; spouts=[]; selected=null; spoutIdx=0; configureSliders(activeTargetKind()); });
 
     seg("matSeg","data-mat", function(v){ material=v; });
-    seg("scaleSeg","data-scale", function(v){ scaleName=v; buildBoards(); });
+    seg("scaleSeg","data-scale", function(v){ scaleName=v; repitchBoards(); });
     toggleSeg("ambSeg","data-amb", function(k,on){ if(AMB[k]) AMB[k](on); });
     document.getElementById("loopBtn").addEventListener("click", function(){ loopOn=!loopOn; this.classList.toggle("on",loopOn); scheduleLoop(); });
     var bpmEl=document.getElementById("bpm");
