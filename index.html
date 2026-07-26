@@ -419,6 +419,7 @@
   // ---------- 盤面 ----------
   var W=0,H=0,DPR=1;
   var boards=[], balls=[], notePool=[];
+  var boardReady=false;   // 盤面を一度でも構築したか。resize(横回転)では再構築せず作成物を保持するため
   var REFW=405;   // 論理の基準幅(固定)。アプリ全体が9:16固定→ステージも一定比→挙動が常に一定
   function layout(){
     var vw=window.innerWidth, vh=window.innerHeight;           // アプリ全体を9:16に収める(レターボックス)
@@ -434,7 +435,9 @@
     W=REFW; H=Math.round(REFW*pxH/pxW);   // 幅固定・高さはステージ比。盤面はステージいっぱい
     var s=(pxW*DPR)/W;                     // 論理→ピクセルの一様スケール
     cv.getContext("2d").setTransform(s,0,0,s,0,0);
-    buildBoards();
+    // 盤面は9:16固定で論理座標(W=405固定・H=ステージ比)が回転しても不変。
+    // resize(横回転)のたびに作り直すと作成物が消えるので、初回のみ構築する。
+    if(!boardReady){ buildBoards(); boardReady=true; }
   }
   function noteForX(pool,x){ var frac=Math.max(0,Math.min(1,x/W)); return pool[Math.round(frac*(pool.length-1))]; }
   function buildBoards(){
