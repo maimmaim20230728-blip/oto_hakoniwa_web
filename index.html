@@ -421,6 +421,8 @@
   var boards=[], balls=[], notePool=[];
   var boardReady=false;   // 盤面を一度でも構築したか。resize(横回転)では再構築せず作成物を保持するため
   var REFW=405;   // 論理の基準幅(固定)。アプリ全体が9:16固定→ステージも一定比→挙動が常に一定
+  // 盤面の左右のフレーム(枠)。球はこの内側の面ではね返る = 見た目と当たりが一致する
+  var FRAME_W=Math.max(7, Math.round(REFW*0.022));
   function layout(){
     var vw=window.innerWidth, vh=window.innerHeight;           // アプリ全体を9:16に収める(レターボックス)
     var ww=Math.min(vw, vh*9/16), wh=ww*16/9;
@@ -473,11 +475,16 @@
     notePool=buildNotePool(); pool14=notePool.slice(0,14);
     for(var i=0;i<boards.length;i++){ assignNote(boards[i]); }
   }
+  /* 球を落とせる横位置。フレームの内側に必ず収める(枠にめり込んだ状態で生まれないように) */
+  function dropX(x){
+    var r=Math.max(9,W*0.024);
+    return Math.max(Math.max(W*0.08, FRAME_W+r), Math.min(Math.min(W*0.92, W-FRAME_W-r), x));
+  }
   function dropBall(px){
     if(!started) return;
     if(balls.length>60) return;
     var x=(px==null)? (W*(0.14+0.72*Math.random())) : px;
-    x=Math.max(W*0.08, Math.min(W*0.92, x));
+    x=dropX(x);
     var col = BALLCOL[material]||"#bfeaff";
     balls.push({x:x, y:-10, vx:(Math.random()-0.5)*40, vy:0, r:Math.max(9,W*0.024), mat:material, col:col, hits:0});
   }
@@ -705,7 +712,9 @@
     if(tool==='spout'){
       var si=spoutAt(x);
       if(si>=0){ dropBall(spouts[si]); }                          // 既存の落とし口をタップ＝そこから試し落下
-      else if(spouts.length<5){ spouts.push(x); dropBall(x); }    // 新規＝設置＋その場で試し落下
+      // 新規＝設置＋その場で試し落下。マーカーは実際に球が落ちる範囲へ寄せる
+      // (dropBall と同じ範囲。フレームの上にマーカーだけ乗って位置がずれるのを防ぐ)
+      else if(spouts.length<5){ var sx=dropX(x); spouts.push(sx); dropBall(sx); }
       return;
     }
     if(tool==='erase'){ eraseAt(x,y); dragging=true; return; }  // タップ＋なぞりで消す
@@ -752,8 +761,9 @@
       var b=balls[i];
       b.vy+=g*dt;
       b.x+=b.vx*dt; b.y+=b.vy*dt;
-      if(b.x<b.r){ b.x=b.r; b.vx=Math.abs(b.vx)*0.7; }
-      if(b.x>W-b.r){ b.x=W-b.r; b.vx=-Math.abs(b.vx)*0.7; }
+      // 左右のフレームの内側の面ではね返る(描いてある枠の面と当たりを一致させる)
+      if(b.x<FRAME_W+b.r){ b.x=FRAME_W+b.r; b.vx=Math.abs(b.vx)*0.7; }
+      if(b.x>W-FRAME_W-b.r){ b.x=W-FRAME_W-b.r; b.vx=-Math.abs(b.vx)*0.7; }
       for(var j=0;j<boards.length;j++){
         var bd=boards[j];
         var hi=obstacleHit(b,bd);
@@ -793,15 +803,44 @@
         }
       }
     }
+    // 🔴 押し出しのあとにもう一度フレームへ収める。
+    //    ゴツゴツからの押し出し(b.x+=nx*pen)や球同士の分離は上の壁クランプより後に走るため、
+    //    ここで直さないと球が枠に数px めり込んで見える。
+    for(var ci=0;ci<balls.length;ci++){
+      var C=balls[ci], lo=FRAME_W+C.r, hiX=W-FRAME_W-C.r;
+      if(C.x<lo){ C.x=lo; if(C.vx<0) C.vx=Math.abs(C.vx)*0.7; }
+      if(C.x>hiX){ C.x=hiX; if(C.vx>0) C.vx=-Math.abs(C.vx)*0.7; }
+    }
     for(var k=0;k<boards.length;k++){
       if(boards[k].glow>0) boards[k].glow*=0.90;
       if(boards[k].cd>0) boards[k].cd-=dt;
     }
     for(var m=rings.length-1;m>=0;m--){ rings[m].t-=dt; if(rings[m].t<=0) rings.splice(m,1); }
   }
+  /* 盤面の左右のフレーム(枠)。
+     ・球はこの内側の面ではね返る(step の当たり判定と同じ FRAME_W)
+     ・外side が暗く内側が明るい横グラデで面取りに見せ、内側の面に水色の細い光を入れる
+     ・作ったものや落とし口マーカーが枠に隠れないよう、いちばん奥(最初)に描く */
+  function drawFrame(g){
+    var fw=FRAME_W;
+    g.save();
+    var gl=g.createLinearGradient(0,0,fw,0);
+    gl.addColorStop(0,"#0d1826"); gl.addColorStop(0.55,"#26374a"); gl.addColorStop(1,"#3a5064");
+    g.fillStyle=gl; g.fillRect(0,0,fw,H);
+    var gr=g.createLinearGradient(W-fw,0,W,0);
+    gr.addColorStop(0,"#3a5064"); gr.addColorStop(0.45,"#26374a"); gr.addColorStop(1,"#0d1826");
+    g.fillStyle=gr; g.fillRect(W-fw,0,fw,H);
+    g.strokeStyle="rgba(79,195,232,.45)"; g.lineWidth=1.5;
+    g.beginPath();
+    g.moveTo(fw-0.75,0);     g.lineTo(fw-0.75,H);
+    g.moveTo(W-fw+0.75,0);   g.lineTo(W-fw+0.75,H);
+    g.stroke();
+    g.restore();
+  }
   function draw(){
     var cv=document.getElementById("cv"); var g=cv.getContext("2d");
     g.clearRect(0,0,W,H);
+    drawFrame(g);
     if(editMode && snap) drawGrid(g);
     for(var j=0;j<boards.length;j++){
       var bd=boards[j];
@@ -1120,7 +1159,8 @@
       else ob={t:'peg', x:x, y:y, rx:+a[3], ry:+a[4], rot:+a[5], note:0, glow:0, cd:0};
       assignNote(ob); boards.push(ob);
     }
-    spouts=((o.sp instanceof Array)?o.sp:[]).slice(0,5).map(Number);
+    // 昔つくった作品の落とし口も、球が実際に落ちる範囲へ寄せる(枠の上にマーカーだけ残らないように)
+    spouts=((o.sp instanceof Array)?o.sp:[]).slice(0,5).map(Number).filter(function(v){ return isFinite(v); }).map(dropX);
     spoutIdx=0; selected=null; balls=[];
     syncSettingUI();
     if(eSizeRow && editMode) configureSliders(activeTargetKind());
