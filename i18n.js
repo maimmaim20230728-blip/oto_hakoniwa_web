@@ -263,6 +263,15 @@
   };
   for (var _l4 in MOREKEYS) { if (I18N[_l4]) { for (var _k4 in MOREKEYS[_l4]) { I18N[_l4][_k4] = MOREKEYS[_l4][_k4]; } } }
 
+  /* Play版の書き出し(共有の画面)で 保存できなかったとき(2026-09-30・record.js)。全12言語。 */
+  var SAVEFAILKEYS = {
+    ja:{ saveFail:"保存できませんでした" }, en:{ saveFail:"Could not save" }, de:{ saveFail:"Speichern nicht möglich" },
+    fr:{ saveFail:"Impossible d'enregistrer" }, es:{ saveFail:"No se pudo guardar" }, it:{ saveFail:"Impossibile salvare" },
+    pt:{ saveFail:"Não foi possível salvar" }, nl:{ saveFail:"Opslaan is niet gelukt" }, sv:{ saveFail:"Kunde inte spara" },
+    ko:{ saveFail:"저장하지 못했어요" }, zh:{ saveFail:"无法保存" }, ar:{ saveFail:"تعذّر الحفظ" }
+  };
+  for (var _l5 in SAVEFAILKEYS) { if (I18N[_l5]) { for (var _k5 in SAVEFAILKEYS[_l5]) { I18N[_l5][_k5] = SAVEFAILKEYS[_l5][_k5]; } } }
+
   /* 言語コード → 自称ラベル(切替UIの表示名) */
   var LABELS = {
     ja: '日本語', en: 'English', de: 'Deutsch', fr: 'Français', es: 'Español', it: 'Italiano',

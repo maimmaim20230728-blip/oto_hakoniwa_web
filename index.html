@@ -1126,6 +1126,40 @@
   }
   function backToTitle(){ document.getElementById("startOverlay").style.display=""; }   // 言語変更等のためタイトルへ戻る
 
+  // ---------- Android の戻るボタン(Play版だけ・2026-09-30) ----------
+  // @capacitor/app が無いと、戻るを押すと アプリごと後ろに下がっていた(Android 11 以前は閉じる)。押したときの順:
+  //   ①つくる で「消す」(保存の枠を消すモード)が入っていれば、もう一度「消す」を押したのと同じ(枠は消さない)
+  //   ②遊ぶ・つくる の画面=「タイトルに戻る」と同じ(盤面・録音・音は そのまま。「はじめる」で同じ所から続く=確かめは出さない)
+  //   ③タイトル=アプリを後ろに下げる(minimizeApp。中身は そのまま)
+  // プラグインはネイティブが注入する Capacitor.Plugins.App を使う(registerPlugin は WebView には無い)。Web版(ブラウザ)は何も変えない
+  function isNativeApp(){
+    try{ var c=window.Capacitor; return !!(c && typeof c.isNativePlatform==="function" && c.isNativePlatform()); }catch(e){ return false; }
+  }
+  function nativeApp(fn){
+    try{
+      var c=window.Capacitor;
+      if(typeof c.isPluginAvailable==="function" && !c.isPluginAvailable("App")) return null;
+      var p=c.Plugins && c.Plugins.App;
+      return (p && typeof p[fn]==="function") ? p : null;
+    }catch(e){ return null; }
+  }
+  function minimizeApp(){
+    var ap=nativeApp("minimizeApp");
+    try{ if(ap){ var pr=ap.minimizeApp(); if(pr && pr.catch) pr.catch(function(){}); } }catch(e){}
+  }
+  function onBack(){
+    var so=document.getElementById("startOverlay");
+    if(so && so.style.display!=="none"){ minimizeApp(); return; }
+    if(editMode && slotDelMode){ var b=document.getElementById("slotDelBtn"); if(b) b.click(); return; }
+    backToTitle();
+  }
+  function watchBack(){
+    if(!isNativeApp()) return;
+    var ap=nativeApp("addListener");
+    if(!ap) return;
+    try{ ap.addListener("backButton", function(){ onBack(); }); }catch(e){}
+  }
+
   // ========== つくった盤面の 保存(10枠) / 譲渡・バックアップコード / 作りかけ自動保持 ==========
   var SLOT_KEY='oto_slots', WIP_KEY='oto_wip', SLOT_N=10, slotDelMode=false;
   function r1(v){ return Math.round(v*10)/10; }
@@ -1277,6 +1311,8 @@
       if(editMode) configureSliders(activeTargetKind());
       if(window.OtoRec && OtoRec.refreshLang) OtoRec.refreshLang();
     }); }
+
+    watchBack();   // Android の戻るボタン(Play版だけ)
   });
 })();
 </script>
