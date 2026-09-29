@@ -272,6 +272,241 @@
   };
   for (var _l5 in SAVEFAILKEYS) { if (I18N[_l5]) { for (var _k5 in SAVEFAILKEYS[_l5]) { I18N[_l5][_k5] = SAVEFAILKEYS[_l5][_k5]; } } }
 
+  /* はじめての 遊びかた(2026-09-30・index.html の openGuide)。全12言語。
+     g_heads / g_bodies は ページの配列(ja と同じ数)。本文の {play} などは openGuide が その言語の画面の文字に さしかえる(ボタン名が画面と かならず同じ)。
+     さいごの ボタンは タイトルと同じ「▶ + start」(押すと 案内を とじて はじめる)。g_again は タイトルの「? 遊びかた」の文字 */
+  var GUIDEKEYS = {
+    ja: { g_title:'遊びかた', g_step:'{n} / {m}', g_prev:'まえ', g_next:'つぎ', g_again:'遊びかた',
+      g_heads:[
+        '音の箱庭へ ようこそ',
+        '「{play}」: 画面をタップして音を出す',
+        '自動で降らす・速さ・音量',
+        '「{edit}」: 盤面を自分で組む',
+        '「{spout}」と保存',
+        '「{rec}」: 録音して保存する',
+        'つくった物と、もう一度見る場所'
+      ],
+      g_bodies:[
+        'このアプリは、上から落ちる球がペグや板に当たって音が鳴る、音の箱庭です。\n音はいつも音階にそろうので、どこに当たっても きれいに響きます。ヘッドフォンがおすすめです。\n言語は、上の「{lang}」でえらべます。',
+        '「{play}」では、上の盤面をタップすると、そこから球が落ちて音が鳴ります。\n「{material}」で音色(「{m_glass}」「{m_piano}」など)を、「{scale}」で雰囲気(「{s_bright}」「{s_japan}」など)をえらべます。\n「{ambient}」の「{a_rain}」「{a_wave}」などを重ねることもできます。',
+        '「{dropBtn}」を押すと、球が自動で落ちつづけます。もう一度押すと止まります。\n「{speed}」で落とす速さを、「{volume}」で音の大きさを変えられます。',
+        '「{edit}」に切りかえると、盤面に物を置けます。「{tool}」で「{peg}」「{poly}」「{star}」「{board}」をえらび、盤面をタップして置きます。\n置いた物はドラッグで動かし、スライダーで大きさや かたむきを変えます。「{erase}」で消せます。\n「{clearAll}」で全部消え、「{reset}」で はじめの並びに戻ります。',
+        '「{spout}」をタップで置くと、そこから球が落ちます(5つまで)。「{flow}」で落ちる順番をえらべます。\n「{sv_save}」のあいている枠を押すと、今の盤面を保存します。入っている枠を押すと読み込みます。\n「{sv_show}」で出るコードをのこしておくと、ほかの端末でも「{sv_import}」から読み込めます。',
+        '「{recStart}」を押すと、鳴っている音を録音します。「{recStop}」で止めます。\n止めたあと、波の形の上で使う範囲をえらび、「{preview}」で聞いて、「{saveWav}」で保存します。\nつくった音の使い方(CC BY-SA 4.0)は、録音の欄の下に書いてあります。',
+        'つくった盤面は、この端末の中だけに保存され、どこにも送られません。登録もいりません。\n「{backTitle}」でタイトルに戻れます。この遊びかたは、タイトルの「{g_again}」で いつでも もう一度 見られます。'
+      ] },
+    en: { g_title:'How to play', g_step:'{n} / {m}', g_prev:'Back', g_next:'Next', g_again:'How to play',
+      g_heads:[
+        'Welcome to Oto no Hakoniwa',
+        '"{play}": tap the screen to make sound',
+        'Auto drop, speed and volume',
+        '"{edit}": build your own board',
+        '"{spout}" and saving',
+        '"{rec}": record and save',
+        'Your creations, and seeing this again'
+      ],
+      g_bodies:[
+        'In this app, balls fall from the top, hit pegs and boards, and make sounds: a little garden of sound.\nThe notes always fit a musical scale, so wherever a ball hits, it sounds nice together. Headphones are recommended.\nChoose your language above, in "{lang}".',
+        'In "{play}", tap the board at the top and a ball drops from there and makes a sound.\nChoose the tone with "{material}" ("{m_glass}", "{m_piano}" and more) and the mood with "{scale}" ("{s_bright}", "{s_japan}" and more).\nYou can also layer sounds from "{ambient}", such as "{a_rain}" or "{a_wave}".',
+        'Tap "{dropBtn}" and balls keep falling on their own. Tap it again to stop.\nChange how fast they drop with "{speed}" and how loud they are with "{volume}".',
+        'Switch to "{edit}" to place things on the board. Under "{tool}", choose "{peg}", "{poly}", "{star}" or "{board}", then tap the board to place it.\nDrag a placed item to move it, and use the sliders to change its size or tilt. Remove things with "{erase}".\n"{clearAll}" removes everything, and "{reset}" brings back the starting layout.',
+        'Tap to place a "{spout}" and balls fall from there (up to 5). Choose the order they fall in with "{flow}".\nTap an empty slot under "{sv_save}" to save the current board. Tap a filled slot to load it.\nKeep the code from "{sv_show}" and you can load it on another device with "{sv_import}".',
+        'Tap "{recStart}" to record the sound that is playing. Tap "{recStop}" to stop.\nThen choose the part to use on the waveform, listen with "{preview}", and save with "{saveWav}".\nHow you may use the sounds you make (CC BY-SA 4.0) is written below the recording area.',
+        'Your boards are stored only on this device and are never sent anywhere. No sign-up is needed.\n"{backTitle}" takes you back to the title. You can see this guide again at any time with "{g_again}" on the title screen.'
+      ] },
+    de: { g_title:'Spielanleitung', g_step:'{n} / {m}', g_prev:'Zurück', g_next:'Weiter', g_again:'Spielanleitung',
+      g_heads:[
+        'Willkommen bei Oto no Hakoniwa',
+        '„{play}“: auf den Bildschirm tippen und Töne machen',
+        'Automatisch fallen lassen, Tempo und Lautstärke',
+        '„{edit}“: das eigene Spielfeld bauen',
+        '„{spout}“ und Speichern',
+        '„{rec}“: aufnehmen und speichern',
+        'Deine Werke und diese Anleitung'
+      ],
+      g_bodies:[
+        'In dieser App fallen Kugeln von oben, treffen Pins und Bretter und erzeugen Töne: ein kleiner Klanggarten.\nDie Töne passen immer zu einer Tonleiter, deshalb klingt es überall schön zusammen. Kopfhörer werden empfohlen.\nDie Sprache wählst du oben bei „{lang}“.',
+        'Tippst du bei „{play}“ auf das Spielfeld oben, fällt dort eine Kugel und erzeugt einen Ton.\nMit „{material}“ wählst du den Klang („{m_glass}“, „{m_piano}“ und mehr), mit „{scale}“ die Stimmung („{s_bright}“, „{s_japan}“ und mehr).\nUnter „{ambient}“ kannst du Klänge wie „{a_rain}“ oder „{a_wave}“ dazulegen.',
+        'Tippe auf „{dropBtn}“, dann fallen die Kugeln von selbst weiter. Noch einmal tippen hält sie an.\nMit „{speed}“ änderst du, wie schnell sie fallen, mit „{volume}“, wie laut sie klingen.',
+        'Wechsle zu „{edit}“, um Dinge auf das Spielfeld zu setzen. Wähle unter „{tool}“ „{peg}“, „{poly}“, „{star}“ oder „{board}“ und tippe dann auf das Spielfeld.\nGesetzte Teile verschiebst du durch Ziehen, mit den Reglern änderst du Größe und Neigung. Mit „{erase}“ entfernst du sie.\n„{clearAll}“ löscht alles, „{reset}“ stellt die Anfangsanordnung wieder her.',
+        'Setze durch Tippen einen „{spout}“, dann fallen die Kugeln dort heraus (bis zu 5). Unter „{flow}“ wählst du die Reihenfolge.\nTippe unter „{sv_save}“ auf einen leeren Platz, um das aktuelle Spielfeld zu speichern. Ein belegter Platz lädt es.\nBewahre den Code aus „{sv_show}“ auf, dann kannst du ihn auf einem anderen Gerät mit „{sv_import}“ laden.',
+        'Tippe auf „{recStart}“, um die Töne aufzunehmen, die gerade erklingen. Mit „{recStop}“ hältst du an.\nDanach wählst du auf der Wellenform den Teil aus, hörst ihn mit „{preview}“ an und speicherst ihn mit „{saveWav}“.\nWie du die Klänge nutzen darfst (CC BY-SA 4.0), steht unter dem Aufnahmebereich.',
+        'Deine Spielfelder bleiben nur auf diesem Gerät und werden nirgendwohin gesendet. Eine Anmeldung ist nicht nötig.\nMit „{backTitle}“ kommst du zum Titelbildschirm. Diese Anleitung siehst du dort jederzeit wieder mit „{g_again}“.'
+      ] },
+    fr: { g_title:'Comment jouer', g_step:'{n} / {m}', g_prev:'Retour', g_next:'Suivant', g_again:'Comment jouer',
+      g_heads:[
+        'Bienvenue dans Oto no Hakoniwa',
+        '« {play} » : touchez l’écran pour faire du son',
+        'Lâcher automatique, vitesse et volume',
+        '« {edit} » : construire votre plateau',
+        '« {spout} » et sauvegarde',
+        '« {rec} » : enregistrer et sauvegarder',
+        'Vos créations et ce guide'
+      ],
+      g_bodies:[
+        'Dans cette appli, des billes tombent d’en haut, touchent des picots et des planches et font des sons : un petit jardin sonore.\nLes notes suivent toujours une gamme, alors tout sonne bien ensemble, où que la bille touche. Un casque est recommandé.\nChoisissez la langue en haut, dans « {lang} ».',
+        'En mode « {play} », touchez le plateau en haut : une bille tombe de là et fait un son.\nChoisissez le timbre avec « {material} » (« {m_glass} », « {m_piano} », etc.) et l’ambiance avec « {scale} » (« {s_bright} », « {s_japan} », etc.).\nVous pouvez aussi ajouter des sons de « {ambient} », comme « {a_rain} » ou « {a_wave} ».',
+        'Touchez « {dropBtn} » et les billes tombent toutes seules. Touchez encore pour arrêter.\nRéglez leur rythme avec « {speed} » et le niveau sonore avec « {volume} ».',
+        'Passez en mode « {edit} » pour placer des éléments sur le plateau. Dans « {tool} », choisissez « {peg} », « {poly} », « {star} » ou « {board} », puis touchez le plateau.\nFaites glisser un élément pour le déplacer, et réglez sa taille ou son inclinaison avec les curseurs. « {erase} » permet d’en retirer.\n« {clearAll} » retire tout, et « {reset} » remet la disposition de départ.',
+        'Touchez pour placer une « {spout} » : les billes tombent de là (5 au maximum). Choisissez l’ordre avec « {flow} ».\nDans « {sv_save} », touchez un emplacement vide pour enregistrer le plateau. Un emplacement rempli le recharge.\nGardez le code de « {sv_show} » : vous pourrez le charger sur un autre appareil avec « {sv_import} ».',
+        'Touchez « {recStart} » pour enregistrer le son en cours. Touchez « {recStop} » pour arrêter.\nEnsuite, choisissez la partie à garder sur la forme d’onde, écoutez-la avec « {preview} » et sauvegardez-la avec « {saveWav} ».\nLes conditions d’utilisation des sons créés (CC BY-SA 4.0) sont écrites sous la zone d’enregistrement.',
+        'Vos plateaux restent uniquement sur cet appareil et ne sont jamais envoyés. Aucune inscription n’est nécessaire.\n« {backTitle} » ramène à l’écran titre. Vous pouvez y revoir ce guide à tout moment avec « {g_again} ».'
+      ] },
+    es: { g_title:'Cómo jugar', g_step:'{n} / {m}', g_prev:'Atrás', g_next:'Siguiente', g_again:'Cómo jugar',
+      g_heads:[
+        'Te damos la bienvenida a Oto no Hakoniwa',
+        '"{play}": toca la pantalla para hacer sonar',
+        'Soltar solo, velocidad y volumen',
+        '"{edit}": arma tu propio tablero',
+        '"{spout}" y guardar',
+        '"{rec}": grabar y guardar',
+        'Lo que creas y esta guía'
+      ],
+      g_bodies:[
+        'En esta app, unas bolas caen desde arriba, chocan con clavijas y tablas y suenan: un pequeño jardín de sonidos.\nLas notas siempre encajan en una escala, así que suena bien toque donde toque. Se recomiendan auriculares.\nElige el idioma arriba, en "{lang}".',
+        'En "{play}", toca el tablero de arriba y caerá una bola desde ahí que suena.\nElige el timbre con "{material}" ("{m_glass}", "{m_piano}", etc.) y el ambiente con "{scale}" ("{s_bright}", "{s_japan}", etc.).\nTambién puedes sumar sonidos de "{ambient}", como "{a_rain}" u "{a_wave}".',
+        'Toca "{dropBtn}" y las bolas siguen cayendo solas. Tócalo otra vez para parar.\nCambia lo rápido que caen con "{speed}" y lo fuerte que suenan con "{volume}".',
+        'Cambia a "{edit}" para poner cosas en el tablero. En "{tool}" elige "{peg}", "{poly}", "{star}" o "{board}" y toca el tablero para colocarlo.\nArrastra lo que pusiste para moverlo y usa los deslizadores para su tamaño o inclinación. Quítalo con "{erase}".\n"{clearAll}" lo quita todo y "{reset}" vuelve a la disposición inicial.',
+        'Toca para poner una "{spout}" y las bolas caerán desde ahí (hasta 5). Elige el orden con "{flow}".\nEn "{sv_save}", toca un espacio vacío para guardar el tablero actual. Un espacio lleno lo carga.\nGuarda el código de "{sv_show}" y podrás cargarlo en otro dispositivo con "{sv_import}".',
+        'Toca "{recStart}" para grabar lo que está sonando. Toca "{recStop}" para parar.\nLuego elige la parte que quieres en la forma de onda, escúchala con "{preview}" y guárdala con "{saveWav}".\nCómo puedes usar los sonidos que creas (CC BY-SA 4.0) está escrito debajo de la zona de grabación.',
+        'Tus tableros se guardan solo en este dispositivo y nunca se envían a ningún sitio. No hace falta registrarse.\n"{backTitle}" te lleva a la pantalla de título. Allí puedes ver esta guía otra vez cuando quieras con "{g_again}".'
+      ] },
+    it: { g_title:'Come si gioca', g_step:'{n} / {m}', g_prev:'Indietro', g_next:'Avanti', g_again:'Come si gioca',
+      g_heads:[
+        'Ti diamo il benvenuto in Oto no Hakoniwa',
+        '«{play}»: tocca lo schermo per fare suoni',
+        'Caduta automatica, velocità e volume',
+        '«{edit}»: costruisci il tuo tavolo',
+        '«{spout}» e salvataggio',
+        '«{rec}»: registrare e salvare',
+        'Le tue creazioni e questa guida'
+      ],
+      g_bodies:[
+        'In questa app delle palline cadono dall’alto, colpiscono pioli e barre e fanno suoni: un piccolo giardino di suoni.\nLe note seguono sempre una scala, quindi suona bene insieme ovunque la pallina colpisca. Sono consigliate le cuffie.\nScegli la lingua in alto, in «{lang}».',
+        'In «{play}», tocca il tavolo in alto: da lì cade una pallina che suona.\nScegli il timbro con «{material}» («{m_glass}», «{m_piano}» e altri) e l’atmosfera con «{scale}» («{s_bright}», «{s_japan}» e altre).\nPuoi anche aggiungere suoni da «{ambient}», come «{a_rain}» o «{a_wave}».',
+        'Tocca «{dropBtn}» e le palline continuano a cadere da sole. Toccalo di nuovo per fermarle.\nCambia quanto spesso cadono con «{speed}» e quanto forte suonano con «{volume}».',
+        'Passa a «{edit}» per mettere oggetti sul tavolo. In «{tool}» scegli «{peg}», «{poly}», «{star}» o «{board}», poi tocca il tavolo per posizionarlo.\nTrascina un oggetto per spostarlo e usa i cursori per dimensione e inclinazione. Toglilo con «{erase}».\n«{clearAll}» toglie tutto e «{reset}» riporta la disposizione iniziale.',
+        'Tocca per mettere una «{spout}»: le palline cadranno da lì (fino a 5). Scegli l’ordine con «{flow}».\nIn «{sv_save}», tocca uno spazio vuoto per salvare il tavolo attuale. Uno spazio pieno lo carica.\nConserva il codice di «{sv_show}» e potrai caricarlo su un altro dispositivo con «{sv_import}».',
+        'Tocca «{recStart}» per registrare ciò che sta suonando. Tocca «{recStop}» per fermare.\nPoi scegli la parte da tenere sulla forma d’onda, ascoltala con «{preview}» e salvala con «{saveWav}».\nCome puoi usare i suoni che crei (CC BY-SA 4.0) è scritto sotto l’area di registrazione.',
+        'I tuoi tavoli restano solo su questo dispositivo e non vengono mai inviati. Non serve registrarsi.\n«{backTitle}» riporta alla schermata del titolo. Lì puoi rivedere questa guida quando vuoi con «{g_again}».'
+      ] },
+    pt: { g_title:'Como jogar', g_step:'{n} / {m}', g_prev:'Voltar', g_next:'Próximo', g_again:'Como jogar',
+      g_heads:[
+        'Boas-vindas ao Oto no Hakoniwa',
+        '"{play}": toque na tela para fazer som',
+        'Soltar automático, velocidade e volume',
+        '"{edit}": monte seu próprio tabuleiro',
+        '"{spout}" e salvar',
+        '"{rec}": gravar e salvar',
+        'O que você cria e este guia'
+      ],
+      g_bodies:[
+        'Neste app, bolas caem de cima, batem em pinos e placas e fazem sons: um pequeno jardim de sons.\nAs notas sempre seguem uma escala, então tudo soa bem junto, onde quer que a bola bata. Fones de ouvido são recomendados.\nEscolha o idioma acima, em "{lang}".',
+        'Em "{play}", toque no tabuleiro em cima e uma bola cai dali fazendo som.\nEscolha o timbre em "{material}" ("{m_glass}", "{m_piano}" e outros) e o clima em "{scale}" ("{s_bright}", "{s_japan}" e outras).\nVocê também pode somar sons de "{ambient}", como "{a_rain}" ou "{a_wave}".',
+        'Toque em "{dropBtn}" e as bolas continuam caindo sozinhas. Toque de novo para parar.\nMude a rapidez da queda em "{speed}" e o volume do som em "{volume}".',
+        'Mude para "{edit}" para colocar peças no tabuleiro. Em "{tool}", escolha "{peg}", "{poly}", "{star}" ou "{board}" e toque no tabuleiro para colocar.\nArraste uma peça para movê-la e use os controles deslizantes para o tamanho ou a inclinação. Tire peças com "{erase}".\n"{clearAll}" tira tudo e "{reset}" traz de volta o arranjo inicial.',
+        'Toque para colocar uma "{spout}" e as bolas cairão dali (até 5). Escolha a ordem em "{flow}".\nEm "{sv_save}", toque num espaço vazio para salvar o tabuleiro atual. Um espaço cheio carrega o tabuleiro.\nGuarde o código de "{sv_show}" e você poderá carregá-lo em outro aparelho com "{sv_import}".',
+        'Toque em "{recStart}" para gravar o som que está tocando. Toque em "{recStop}" para parar.\nDepois escolha a parte que quer na forma de onda, ouça com "{preview}" e salve com "{saveWav}".\nComo você pode usar os sons que cria (CC BY-SA 4.0) está escrito abaixo da área de gravação.',
+        'Seus tabuleiros ficam só neste aparelho e nunca são enviados. Não precisa de cadastro.\n"{backTitle}" leva você à tela de título. Lá você pode ver este guia de novo quando quiser em "{g_again}".'
+      ] },
+    nl: { g_title:'Zo speel je', g_step:'{n} / {m}', g_prev:'Vorige', g_next:'Volgende', g_again:'Zo speel je',
+      g_heads:[
+        'Welkom bij Oto no Hakoniwa',
+        '"{play}": tik op het scherm voor geluid',
+        'Vanzelf laten vallen, snelheid en volume',
+        '"{edit}": bouw je eigen bord',
+        '"{spout}" en opslaan',
+        '"{rec}": opnemen en opslaan',
+        'Wat je maakt, en deze uitleg'
+      ],
+      g_bodies:[
+        'In deze app vallen ballen van boven, raken pennen en planken en maken geluid: een kleine geluidstuin.\nDe tonen passen altijd in een toonladder, dus waar een bal ook raakt, het klinkt mooi samen. Een koptelefoon is aan te raden.\nKies de taal bovenaan bij "{lang}".',
+        'Tik bij "{play}" op het bord bovenaan: daar valt een bal die geluid maakt.\nKies de klank met "{material}" ("{m_glass}", "{m_piano}" en meer) en de sfeer met "{scale}" ("{s_bright}", "{s_japan}" en meer).\nJe kunt ook geluiden uit "{ambient}" toevoegen, zoals "{a_rain}" of "{a_wave}".',
+        'Tik op "{dropBtn}" en de ballen blijven vanzelf vallen. Tik nog eens om te stoppen.\nMet "{speed}" verander je hoe snel ze vallen, met "{volume}" hoe hard ze klinken.',
+        'Schakel naar "{edit}" om dingen op het bord te zetten. Kies bij "{tool}" "{peg}", "{poly}", "{star}" of "{board}" en tik op het bord om te plaatsen.\nSleep iets om het te verplaatsen en gebruik de schuiven voor grootte of helling. Met "{erase}" haal je het weg.\n"{clearAll}" haalt alles weg en "{reset}" zet de beginopstelling terug.',
+        'Tik om een "{spout}" te plaatsen: daar vallen de ballen uit (tot 5). Kies de volgorde bij "{flow}".\nTik bij "{sv_save}" op een leeg vak om het huidige bord op te slaan. Een gevuld vak laadt het.\nBewaar de code van "{sv_show}", dan kun je hem op een ander apparaat laden met "{sv_import}".',
+        'Tik op "{recStart}" om op te nemen wat er klinkt. Tik op "{recStop}" om te stoppen.\nKies daarna op de golfvorm het stuk dat je wilt, luister met "{preview}" en sla op met "{saveWav}".\nHoe je de geluiden die je maakt mag gebruiken (CC BY-SA 4.0), staat onder het opnamevak.',
+        'Je borden blijven alleen op dit apparaat en worden nergens naartoe gestuurd. Aanmelden is niet nodig.\nMet "{backTitle}" ga je terug naar het titelscherm. Daar kun je deze uitleg altijd opnieuw bekijken met "{g_again}".'
+      ] },
+    sv: { g_title:'Så spelar du', g_step:'{n} / {m}', g_prev:'Tillbaka', g_next:'Nästa', g_again:'Så spelar du',
+      g_heads:[
+        'Välkommen till Oto no Hakoniwa',
+        '"{play}": tryck på skärmen för att göra ljud',
+        'Släpp automatiskt, hastighet och volym',
+        '"{edit}": bygg din egen bräda',
+        '"{spout}" och att spara',
+        '"{rec}": spela in och spara',
+        'Det du skapar, och den här guiden'
+      ],
+      g_bodies:[
+        'I den här appen faller bollar uppifrån, träffar pinnar och plattor och gör ljud: en liten ljudträdgård.\nTonerna följer alltid en skala, så var bollen än träffar låter det fint tillsammans. Hörlurar rekommenderas.\nVälj språk högst upp, i "{lang}".',
+        'I "{play}" trycker du på brädan högst upp, så faller en boll därifrån och gör ljud.\nVälj klang med "{material}" ("{m_glass}", "{m_piano}" med flera) och stämning med "{scale}" ("{s_bright}", "{s_japan}" med flera).\nDu kan också lägga till ljud från "{ambient}", till exempel "{a_rain}" eller "{a_wave}".',
+        'Tryck på "{dropBtn}" så fortsätter bollarna att falla av sig själva. Tryck igen för att stoppa.\nÄndra hur fort de faller med "{speed}" och hur starkt de låter med "{volume}".',
+        'Byt till "{edit}" för att placera saker på brädan. Välj "{peg}", "{poly}", "{star}" eller "{board}" under "{tool}" och tryck på brädan för att placera.\nDra en sak för att flytta den och använd reglagen för storlek eller lutning. Ta bort saker med "{erase}".\n"{clearAll}" tar bort allt och "{reset}" tar tillbaka startuppställningen.',
+        'Tryck för att placera ett "{spout}", så faller bollarna därifrån (upp till 5). Välj ordningen med "{flow}".\nTryck på en tom plats under "{sv_save}" för att spara brädan. En fylld plats läser in den.\nSpara koden från "{sv_show}", så kan du läsa in den på en annan enhet med "{sv_import}".',
+        'Tryck på "{recStart}" för att spela in det som låter. Tryck på "{recStop}" för att stoppa.\nVälj sedan delen du vill ha på vågformen, lyssna med "{preview}" och spara med "{saveWav}".\nHur du får använda ljuden du gör (CC BY-SA 4.0) står under inspelningsområdet.',
+        'Dina brädor sparas bara på den här enheten och skickas aldrig någonstans. Ingen registrering behövs.\n"{backTitle}" tar dig tillbaka till titelskärmen. Där kan du se den här guiden igen när som helst med "{g_again}".'
+      ] },
+    ko: { g_title:'플레이 방법', g_step:'{n} / {m}', g_prev:'이전', g_next:'다음', g_again:'플레이 방법',
+      g_heads:[
+        'Oto no Hakoniwa에 오신 것을 환영해요',
+        '"{play}": 화면을 눌러 소리 내기',
+        '자동으로 떨어뜨리기, 속도와 음량',
+        '"{edit}": 판을 직접 꾸미기',
+        '"{spout}"과 저장',
+        '"{rec}": 녹음하고 저장하기',
+        '만든 것과 이 안내'
+      ],
+      g_bodies:[
+        '이 앱은 위에서 떨어지는 공이 페그나 판에 부딪혀 소리가 나는, 작은 소리 정원이에요.\n음은 항상 음계에 맞춰지기 때문에 어디에 부딪혀도 예쁘게 울려요. 헤드폰을 권장해요.\n언어는 위의 "{lang}"에서 고를 수 있어요.',
+        '"{play}"에서 위쪽 판을 누르면 거기서 공이 떨어지며 소리가 나요.\n"{material}"로 음색("{m_glass}", "{m_piano}" 등)을, "{scale}"로 분위기("{s_bright}", "{s_japan}" 등)를 고를 수 있어요.\n"{ambient}"의 "{a_rain}", "{a_wave}" 같은 소리를 겹칠 수도 있어요.',
+        '"{dropBtn}"를 누르면 공이 자동으로 계속 떨어져요. 한 번 더 누르면 멈춰요.\n"{speed}"로 떨어지는 빠르기를, "{volume}"으로 소리 크기를 바꿀 수 있어요.',
+        '"{edit}"로 바꾸면 판 위에 물건을 놓을 수 있어요. "{tool}"에서 "{peg}", "{poly}", "{star}", "{board}" 중에서 고르고 판을 눌러 놓아요.\n놓은 것은 끌어서 옮기고, 슬라이더로 크기나 기울기를 바꿔요. "{erase}"로 지울 수 있어요.\n"{clearAll}"로 모두 지우고, "{reset}"를 누르면 처음 배치로 돌아가요.',
+        '"{spout}"을 눌러 놓으면 거기서 공이 떨어져요(최대 5개). "{flow}"에서 떨어지는 순서를 고를 수 있어요.\n"{sv_save}"의 빈 칸을 누르면 지금 판을 저장해요. 채워진 칸을 누르면 불러와요.\n"{sv_show}"로 나오는 코드를 남겨 두면, 다른 기기에서 "{sv_import}"로 불러올 수 있어요.',
+        '"{recStart}"를 누르면 울리고 있는 소리를 녹음해요. "{recStop}"로 멈춰요.\n멈춘 뒤 파형 위에서 쓸 부분을 고르고, "{preview}"로 듣고, "{saveWav}"으로 저장해요.\n만든 소리의 사용 방법(CC BY-SA 4.0)은 녹음 칸 아래에 적혀 있어요.',
+        '만든 판은 이 기기 안에만 저장되고 어디에도 보내지지 않아요. 가입도 필요 없어요.\n"{backTitle}"를 누르면 타이틀로 돌아가요. 이 안내는 타이틀의 "{g_again}"에서 언제든 다시 볼 수 있어요.'
+      ] },
+    zh: { g_title:'玩法', g_step:'{n} / {m}', g_prev:'上一步', g_next:'下一步', g_again:'玩法',
+      g_heads:[
+        '欢迎来到 Oto no Hakoniwa',
+        '“{play}”：点按屏幕发出声音',
+        '自动落球、速度和音量',
+        '“{edit}”：自己搭建盘面',
+        '“{spout}”和保存',
+        '“{rec}”：录音并保存',
+        '你的作品与本说明'
+      ],
+      g_bodies:[
+        '在这个应用里，球从上方落下，碰到圆钉和挡板就会发出声音，就像一个小小的声音庭院。\n音符总是落在音阶上，所以无论碰到哪里，声音都很和谐。建议佩戴耳机。\n可以在上方的“{lang}”中选择语言。',
+        '在“{play}”模式下点按上方的盘面，球就会从那里落下并发出声音。\n用“{material}”选择音色（“{m_glass}”“{m_piano}”等），用“{scale}”选择氛围（“{s_bright}”“{s_japan}”等）。\n还可以叠加“{ambient}”里的“{a_rain}”“{a_wave}”等声音。',
+        '点“{dropBtn}”，球会自动不断落下。再点一次就会停止。\n用“{speed}”调整落下的快慢，用“{volume}”调整声音大小。',
+        '切换到“{edit}”，就可以在盘面上摆放东西。在“{tool}”中选择“{peg}”“{poly}”“{star}”或“{board}”，再点按盘面放置。\n拖动已放置的东西可以移动，用滑块调整大小和倾斜。用“{erase}”可以删除。\n“{clearAll}”会全部删除，“{reset}”会回到最初的布局。',
+        '点按放置“{spout}”，球就会从那里落下（最多5个）。在“{flow}”中选择落下的顺序。\n点“{sv_save}”里的空格子，就会保存当前盘面。点已有内容的格子则会读取。\n保存好“{sv_show}”显示的代码，就能在其他设备上用“{sv_import}”读取。',
+        '点“{recStart}”，就会录下正在播放的声音。点“{recStop}”停止。\n停止后在波形上选择要用的部分，用“{preview}”试听，再用“{saveWav}”保存。\n制作的声音如何使用（CC BY-SA 4.0），写在录音区域的下方。',
+        '你搭建的盘面只保存在本设备中，不会发送到任何地方。也不需要注册。\n点“{backTitle}”回到标题画面。本说明随时可以在标题画面点“{g_again}”再次查看。'
+      ] },
+    ar: { g_title:'طريقة اللعب', g_step:'{n} / {m}', g_prev:'السابق', g_next:'التالي', g_again:'طريقة اللعب',
+      g_heads:[
+        'مرحباً بك في Oto no Hakoniwa',
+        '«{play}»: المس الشاشة لتُصدر صوتاً',
+        'الإسقاط التلقائي والسرعة والصوت',
+        '«{edit}»: ابنِ لوحك بنفسك',
+        '«{spout}» والحفظ',
+        '«{rec}»: سجّل واحفظ',
+        'ما تصنعه وهذا الدليل'
+      ],
+      g_bodies:[
+        'في هذا التطبيق تسقط كرات من الأعلى، فتصطدم بالأوتاد والألواح وتُصدر أصواتاً: حديقة صغيرة من الأصوات.\nالنغمات تتبع دائماً سلّماً موسيقياً، لذلك يبدو الصوت متناغماً أينما اصطدمت الكرة. يُنصح بسماعات الرأس.\nاختر اللغة في الأعلى من «{lang}».',
+        'في «{play}» المس اللوح في الأعلى، فتسقط كرة من هناك وتُصدر صوتاً.\nاختر النغمة من «{material}» («{m_glass}» و«{m_piano}» وغيرها) والجو من «{scale}» («{s_bright}» و«{s_japan}» وغيرها).\nويمكنك أيضاً إضافة أصوات من «{ambient}» مثل «{a_rain}» أو «{a_wave}».',
+        'المس «{dropBtn}» فتستمر الكرات في السقوط وحدها. المسه مرة أخرى للإيقاف.\nغيّر سرعة سقوطها من «{speed}» وارتفاع صوتها من «{volume}».',
+        'انتقل إلى «{edit}» لتضع أشياء على اللوح. اختر من «{tool}» «{peg}» أو «{poly}» أو «{star}» أو «{board}»، ثم المس اللوح لوضعها.\nاسحب الشيء لتحريكه، واستخدم أشرطة التمرير لحجمه أو ميله. أزِله بـ«{erase}».\n«{clearAll}» يزيل كل شيء، و«{reset}» يعيد الترتيب الأول.',
+        'المس لتضع «{spout}» فتسقط الكرات منها (حتى 5). اختر ترتيب السقوط من «{flow}».\nفي «{sv_save}» المس خانة فارغة لحفظ اللوح الحالي. والخانة الممتلئة تحمّله.\nاحتفظ بالرمز من «{sv_show}» لتحمّله على جهاز آخر من «{sv_import}».',
+        'المس «{recStart}» لتسجيل الصوت الذي يعمل الآن. المس «{recStop}» للإيقاف.\nبعدها اختر الجزء الذي تريده على شكل الموجة، واستمع إليه بـ«{preview}»، واحفظه بـ«{saveWav}».\nطريقة استخدام الأصوات التي تصنعها (CC BY-SA 4.0) مكتوبة أسفل منطقة التسجيل.',
+        'ألواحك تبقى على هذا الجهاز فقط ولا تُرسل إلى أي مكان. لا يلزم أي حساب.\n«{backTitle}» يعيدك إلى شاشة العنوان. ومن هناك يمكنك رؤية هذا الدليل مرة أخرى في أي وقت من «{g_again}».'
+      ] }
+  };
+  for (var _l6 in GUIDEKEYS) { if (I18N[_l6]) { for (var _k6 in GUIDEKEYS[_l6]) { I18N[_l6][_k6] = GUIDEKEYS[_l6][_k6]; } } }
+
   /* 言語コード → 自称ラベル(切替UIの表示名) */
   var LABELS = {
     ja: '日本語', en: 'English', de: 'Deutsch', fr: 'Français', es: 'Español', it: 'Italiano',

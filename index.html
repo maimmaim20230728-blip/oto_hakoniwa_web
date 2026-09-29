@@ -76,6 +76,31 @@
   #otoLangSelect{ flex:1; min-width:0; background:#1f2c3b; color:var(--shiro); border:1px solid #2b3b4d;
     border-radius:20px; padding:9px 10px; font-size:12px; font-weight:600; -webkit-appearance:none; appearance:none; }
   #otoLangSelect option{ background:#16202e; color:var(--shiro); }
+  /* タイトルの 言語 と ならべて「? 遊びかた」(はじめての 遊びかた を もう一度 見る・2026-09-30) */
+  #startRow{ width:100%; max-width:320px; display:flex; gap:8px; align-items:stretch; }
+  #startRow #startLang{ flex:1 1 0; min-width:0; max-width:none; }
+  #guideBtn{ flex:0 0 auto; min-width:0; padding:0 14px; line-height:1.2; }   /* 高さは 言語の select に そろえる(タイトルの下の欄を 高くしない) */
+  /* はじめての 遊びかた(openGuide・2026-09-30)。アプリぜんたい(タイトル・盤面・設定)の上に重ねる。
+     ボタンは下に固定した帯(地の色つき=長いページでも本文が透けない)。本文の下は openGuide が 帯の実寸+24px 空ける(ここは その前の下限) */
+  .guide-ov{ position:fixed; inset:0; z-index:50; background:var(--kuro); color:var(--shiro); overflow-y:auto; text-align:start;
+    padding:calc(20px + env(safe-area-inset-top)) max(16px, env(safe-area-inset-right)) calc(140px + env(safe-area-inset-bottom)) max(16px, env(safe-area-inset-left)); }
+  .guide-box{ width:100%; max-width:560px; margin:0 auto; }
+  .guide-top{ display:flex; justify-content:space-between; align-items:baseline; gap:12px; }
+  .guide-title{ margin:0; font-size:17px; font-weight:800; color:var(--mizu); }
+  .guide-step{ margin:0; font-size:15px; font-weight:700; color:#9fb4c6; white-space:nowrap; unicode-bidi:isolate; }   /* 向きは dir=ltr(ar で「7 / 1」にしない) */
+  .guide-lang{ display:flex; align-items:center; flex-wrap:wrap; gap:8px 12px; margin:12px 0 0; font-size:15px; color:#9fb4c6; }
+  .guide-lang select{ min-height:44px; max-width:100%; font-size:15px; font-family:inherit; background:#1f2c3b; color:var(--shiro);
+    border:1px solid #2b3b4d; border-radius:12px; padding:4px 10px; }
+  .guide-h{ font-size:21px; line-height:1.45; margin:16px 0 12px; overflow-wrap:anywhere; line-break:strict; }
+  .guide-p{ font-size:17px; line-height:1.85; margin:0; color:#dfeaf2; white-space:pre-line; overflow-wrap:anywhere; line-break:strict; }
+  html[lang="ko"] .guide-h, html[lang="ko"] .guide-p{ word-break:keep-all; }   /* 日本語は 分かち書きでないので ふつうに折り返す・韓国語は 語で折り返す */
+  .guide-dots{ display:flex; justify-content:center; flex-wrap:wrap; gap:8px; margin:24px 0 0; }
+  .guide-dot{ width:10px; height:10px; border-radius:50%; background:#2b3b4d; }
+  .guide-dot.on{ background:var(--mizu); }
+  .guide-row{ position:fixed; z-index:51; left:0; right:0; bottom:0; display:flex; gap:10px; background:var(--panel); border-top:1px solid #22303f;
+    padding:10px max(16px, env(safe-area-inset-right)) calc(16px + env(safe-area-inset-bottom)) max(16px, env(safe-area-inset-left)); }
+  .guide-row button.chip{ flex:1 1 0; min-width:0; min-height:56px; font-size:17px; font-weight:800; border-radius:28px; overflow-wrap:anywhere; }
+  .guide-row button.guide-next{ background:var(--midori); color:#04140a; border-color:var(--midori); }
 </style>
 </head>
 <body>
@@ -90,7 +115,10 @@
         <span data-i18n="startNote">ヘッドフォン推奨。「遊ぶ」で画面タップ＝球が落ちて音が鳴る。「つくる」でペグや板を自由に置けます。</span>
       </small>
       <div id="startBottom">
-        <div id="startLang" data-oto-langhost></div>
+        <div id="startRow">
+          <div id="startLang" data-oto-langhost></div>
+          <button class="chip" id="guideBtn" type="button"><span aria-hidden="true">? </span><span data-i18n="g_again">遊びかた</span></button>
+        </div>
         <div id="startCredit">
           <span data-i18n="dev_credit">アプリ開発:</span><a href="https://soudansoyogi.com/" target="_blank" rel="noopener" onclick="event.stopPropagation()">介護と支援の相談どころ　そよぎ</a>
         </div>
@@ -1148,6 +1176,7 @@
     try{ if(ap){ var pr=ap.minimizeApp(); if(pr && pr.catch) pr.catch(function(){}); } }catch(e){}
   }
   function onBack(){
+    if(guideOv){ guideOv._back(); return; }   // はじめての 遊びかた: まえの ページ / 1ページ目は(初回)後ろに下げる・(タイトルから)とじる
     var so=document.getElementById("startOverlay");
     if(so && so.style.display!=="none"){ minimizeApp(); return; }
     if(editMode && slotDelMode){ var b=document.getElementById("slotDelBtn"); if(b) b.click(); return; }
@@ -1158,6 +1187,90 @@
     var ap=nativeApp("addListener");
     if(!ap) return;
     try{ ap.addListener("backButton", function(){ onBack(); }); }catch(e){}
+  }
+
+  // ---------- はじめての 遊びかた(初回の案内・2026-09-30) ----------
+  // ヒロさん「ひとつずつ・そよぎ みたいなタイプのアプリは、必ず最初に使い方の丁寧な説明を出してほしい。10代の情報室のように」。
+  // ・初回起動で かならず出す(さいごまで 読むまで、ひらくたびに出る)。前からの利用者にも 更新のあと 1回だけ出る
+  // ・文字は i18n.js の g_title / g_step / g_prev / g_next / g_again / g_heads[] / g_bodies[](12言語)。
+  //   本文の {play} などは その言語の画面の文字に さしかえる(ボタン名が画面と かならず同じ)
+  // ・1ページずつ「つぎ」「まえ」。とじるのは さいごの ページの「▶ はじめる」だけ(タイトルの「▶ はじめる」と同じ=案内を とじて はじめる)。× は おかない
+  // ・案内の あいだは 音を出さない(音が出るのは「はじめる」を押してから=今までと同じ)
+  // ・戻るボタン(Play版): 2ページ目から=まえの ページ / 1ページ目=初回なら後ろに下げる(とじない)、タイトルの「? 遊びかた」から ひらいたときは とじる
+  // ・1ページ目に 言語の えらびかた(タイトルの 言語と同じ ならび)。案内は タイトルの 言語の所も おおうため
+  // ・読み終えたら oto_guide.v1 = true。タイトルの「? 遊びかた」で いつでも もう一度 ひらける
+  var GUIDE_KEY='oto_guide.v1', guideOv=null;
+  function guideDone(){ try{ return localStorage.getItem(GUIDE_KEY)==="true"; }catch(e){ return false; } }
+  function guideText(s){
+    return String(s==null?"":s).replace(/\{([A-Za-z0-9_]+)\}/g, function(m,k){ var v=L(k); return (typeof v==="string" && v!==k) ? v : m; });   // 見つからなければ {…} のまま(試しで見つける)
+  }
+  function openGuide(first){
+    var g0=L("g_bodies");
+    if(guideOv || !Array.isArray(g0) || !g0.length) return;
+    var i=0;
+    function mk(tag,cls){ var e=document.createElement(tag); if(cls) e.className=cls; return e; }
+    var ov=mk("div","guide-ov"); ov.setAttribute("role","dialog"); ov.setAttribute("aria-modal","true");
+    var box=mk("div","guide-box"), top=mk("div","guide-top"), ttl=mk("p","guide-title"), step=mk("p","guide-step");
+    top.appendChild(ttl); top.appendChild(step);
+    var langRow=mk("div","guide-lang"), langLbl=mk("span","guide-lang-lbl"), langSel=document.createElement("select");
+    langSel.setAttribute("aria-label","Language");
+    var codes=(window.OtoI18n && OtoI18n.langs) || [], labels=(window.OtoI18n && OtoI18n.labels) || {};
+    for(var c=0;c<codes.length;c++){ var op=document.createElement("option"); op.value=codes[c]; op.textContent=labels[codes[c]]||codes[c]; langSel.appendChild(op); }
+    langSel.addEventListener("change", function(){
+      // タイトルの 言語の所と 同じ(その change を出す=i18n.js の applyLang と、スライダー・録音の 訳し直し)
+      var s=document.getElementById("otoLangSelect");
+      if(s){ s.value=langSel.value; s.dispatchEvent(new Event("change")); }
+      else if(window.OtoI18n) OtoI18n.applyLang(langSel.value);
+      draw();
+    });
+    langRow.appendChild(langLbl); langRow.appendChild(langSel);
+    var h=mk("h2","guide-h"), p=mk("p","guide-p"), dots=mk("div","guide-dots");
+    dots.setAttribute("aria-hidden","true");
+    var row=mk("div","guide-row");
+    var prevB=mk("button","chip guide-prev"), nextB=mk("button","chip guide-next");
+    prevB.type="button"; nextB.type="button";
+    row.appendChild(prevB); row.appendChild(nextB);
+    box.appendChild(top); box.appendChild(langRow); box.appendChild(h); box.appendChild(p); box.appendChild(dots);
+    ov.appendChild(box); ov.appendChild(row);
+    function bodies(){ var b=L("g_bodies"); return (Array.isArray(b) && b.length) ? b : g0; }
+    // 下の帯(まえ / つぎ)の実寸ぶん、本文の下を空ける(さいごの行が 帯に かくれない)
+    function fit(){
+      var r=row.getBoundingClientRect ? row.getBoundingClientRect() : null, hh=r ? Math.ceil(r.height) : 0;
+      if(hh>0) ov.style.paddingBottom=(hh+24)+"px";
+    }
+    function draw(){
+      var b=bodies(), hs=L("g_heads"), n=b.length;
+      if(i>n-1) i=n-1;
+      ov.setAttribute("aria-label", L("g_title"));
+      ttl.textContent=L("g_title");
+      step.textContent=String(L("g_step")).replace("{n}", String(i+1)).replace("{m}", String(n));
+      step.setAttribute("dir","ltr");   // 「1 / 7」は アラビア語でも 左から(「7 / 1」に見えないように)
+      langRow.style.display=(i===0)?"":"none";
+      langLbl.textContent=L("lang");
+      langSel.value=(window.OtoI18n && OtoI18n.lang) || "ja";
+      h.textContent=guideText(Array.isArray(hs) ? hs[i] : "");
+      p.textContent=guideText(b[i]);
+      dots.textContent="";
+      for(var k=0;k<n;k++) dots.appendChild(mk("span","guide-dot"+(k===i?" on":"")));
+      prevB.textContent=L("g_prev");
+      prevB.style.visibility=(i===0)?"hidden":"visible";   // 「つぎ」の位置を かえない
+      nextB.textContent=(i===n-1) ? ("▶ "+L("start")) : L("g_next");
+      ov.scrollTop=0;
+      fit();
+    }
+    function close(){
+      if(ov.parentNode) ov.parentNode.removeChild(ov);
+      if(guideOv===ov) guideOv=null;
+      try{ localStorage.setItem(GUIDE_KEY,"true"); }catch(e){}
+    }
+    ov._draw=draw; ov._fit=fit;
+    ov._back=function(){ if(i>0){ i--; draw(); return; } if(first) minimizeApp(); else close(); };
+    prevB.addEventListener("click", function(){ if(i>0){ i--; draw(); } });
+    nextB.addEventListener("click", function(){ if(i<bodies().length-1){ i++; draw(); } else { close(); start(); } });   // さいご=タイトルの「▶ はじめる」と同じ
+    guideOv=ov;
+    document.body.appendChild(ov);
+    draw();
+    try{ nextB.focus(); }catch(e){}
   }
 
   // ========== つくった盤面の 保存(10枠) / 譲渡・バックアップコード / 作りかけ自動保持 ==========
@@ -1313,6 +1426,11 @@
     }); }
 
     watchBack();   // Android の戻るボタン(Play版だけ)
+
+    // はじめての 遊びかた(読み終えるまで毎回・2026-09-30)。タイトルの「? 遊びかた」で もう一度
+    document.getElementById("guideBtn").addEventListener("click", function(){ openGuide(false); });
+    window.addEventListener("resize", function(){ if(guideOv && guideOv._fit) guideOv._fit(); });
+    if(!guideDone()) openGuide(true);
   });
 })();
 </script>
