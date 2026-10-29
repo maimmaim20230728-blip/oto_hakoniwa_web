@@ -109,7 +109,7 @@
     <canvas id="cv"></canvas>
     <div id="startOverlay">
       <h2>音の箱庭</h2>
-      <div class="btn">▶ <span data-i18n="start">はじめる</span></div>
+      <div class="btn" id="startGo" role="button" tabindex="0">▶ <span data-i18n="start">はじめる</span></div>
       <small>
         <b data-i18n="startSub">音を出す</b><br>
         <span data-i18n="startNote">ヘッドフォン推奨。「遊ぶ」で画面タップ＝球が落ちて音が鳴る。「つくる」でペグや板を自由に置けます。</span>
@@ -299,7 +299,7 @@
         <div class="row">
           <button class="chip g" id="codeCopyBtn" data-i18n="sv_copy" style="flex:1 1 72px">コピー</button>
           <button class="chip g" id="codeLoadBtn" data-i18n="sv_load" style="flex:1 1 72px">読み込む</button>
-          <span class="val" id="codeMsg" style="flex:1; text-align:left; width:auto; color:var(--midori)"></span>
+          <span class="val" id="codeMsg" style="flex:1; text-align:left; width:auto; color:var(--midori)" aria-live="polite"></span>
         </div>
       </div>
       <div class="hint" data-i18n="sv_hint" style="margin-top:3px"></div>
@@ -1291,8 +1291,24 @@
     function setOn(seg, attr, val){ var bs=document.querySelectorAll('#'+seg+' button'); for(var i=0;i<bs.length;i++){ bs[i].classList.toggle('on', bs[i].getAttribute(attr)===val); } }
     setOn('scaleSeg','data-scale',scaleName); setOn('matSeg','data-mat',material); setOn('flowSeg','data-flow',flowMode);
   }
+  // 🔴盤面コードの中身を先に全部確かめる(数でない値・大きすぎる値・知らない部品が1つでもあれば false)。
+  //   確かめが通るまで今の盤面・音階・素材には触らない＝壊れたコードを読んでも今の盤面は消えない
+  function boardCodeOk(o){
+    if(!o || o.v!==1 || !(o.b instanceof Array) || o.b.length>2000) return false;
+    var LIM=1e4;
+    function num(v){ return typeof v==='number' && isFinite(v) && Math.abs(v)<=LIM; }
+    function pos(v){ return num(v) && v>0; }
+    for(var i=0;i<o.b.length;i++){ var a=o.b[i];
+      if(!(a instanceof Array) || !num(a[1]) || !num(a[2])) return false;
+      if(a[0]===1){ if(!pos(a[3])||!num(a[4])||!pos(a[5])) return false; }
+      else if(a[0]===2||a[0]===3){ if(!pos(a[3])||!num(a[4])||!(a[5]>=3&&a[5]<=32)) return false; }
+      else if(a[0]===0){ if(!pos(a[3])||!pos(a[4])||!num(a[5])) return false; }
+      else return false;
+    }
+    return true;
+  }
   function applyBoard(o){
-    if(!o || o.v!==1 || !(o.b instanceof Array)) return false;
+    if(!boardCodeOk(o)) return false;
     if(o.s && SCALES[o.s]) scaleName=o.s;
     if(o.m && MATERIALS[o.m]) material=o.m;
     if(o.f && (o.f==='order'||o.f==='rand'||o.f==='randall')) flowMode=o.f;
@@ -1315,7 +1331,7 @@
   function b64(o){ try{ return btoa(unescape(encodeURIComponent(JSON.stringify(o)))); }catch(e){ return ''; } }
   function unb64(s){ try{ return JSON.parse(decodeURIComponent(escape(atob((s||'').trim())))); }catch(e){ return null; } }
   function loadSlots(){ try{ var a=JSON.parse(localStorage.getItem(SLOT_KEY)); if(a instanceof Array){ a.length=SLOT_N; return a; } }catch(e){} var z=[]; for(var i=0;i<SLOT_N;i++) z.push(null); return z; }
-  function saveSlots(a){ try{ localStorage.setItem(SLOT_KEY, JSON.stringify(a)); }catch(e){} }
+  function saveSlots(a){ try{ localStorage.setItem(SLOT_KEY, JSON.stringify(a)); return true; }catch(e){ return false; } }   // 保存できたら true
   function renderSlots(){
     var seg=document.getElementById('slotSeg'); if(!seg) return;
     var a=loadSlots(); seg.innerHTML='';
@@ -1331,7 +1347,7 @@
     var a=loadSlots();
     if(slotDelMode){ if(a[i]){ a[i]=null; saveSlots(a); renderSlots(); } return; }
     if(a[i]){ var o=unb64(a[i].c); if(o && applyBoard(o)){ saveWip(); flashMsg('sv_loaded'); } else flashMsg('sv_bad'); }
-    else { a[i]={ c:b64(serializeBoard()) }; saveSlots(a); renderSlots(); flashMsg('sv_saved'); }
+    else { a[i]={ c:b64(serializeBoard()) }; var okS=saveSlots(a); renderSlots(); flashMsg(okS?'sv_saved':'saveFail'); }   // 保存できなかったら「保存しました」は出さない
   }
   function saveWip(){ try{ localStorage.setItem(WIP_KEY, b64(serializeBoard())); }catch(e){} }
   function restoreWip(){ try{ var s=localStorage.getItem(WIP_KEY); if(s){ var o=unb64(s); if(o) applyBoard(o); } }catch(e){} }
@@ -1347,6 +1363,9 @@
     requestAnimationFrame(frame);
 
     document.getElementById("startOverlay").addEventListener("click", start);
+    // 「▶ はじめる」は div なので、Enter / スペースでも押せるように(押すと上の startOverlay の click と同じ)
+    document.getElementById("startGo").addEventListener("keydown", function(e){
+      if(e.key==="Enter"||e.key===" "||e.key==="Spacebar"){ e.preventDefault(); this.click(); } });
     document.getElementById("backTitleBtn").addEventListener("click", backToTitle);
     document.getElementById("startBottom").addEventListener("click", function(e){ e.stopPropagation(); });  // 言語select/クレジットの操作で誤って開始させない
 
@@ -1406,9 +1425,10 @@
     });
     document.getElementById("codeCopyBtn").addEventListener("click", function(){
       var ta=document.getElementById("codeArea"); ta.select();
-      try{ document.execCommand("copy"); }catch(e){}
-      if(navigator.clipboard){ navigator.clipboard.writeText(ta.value).catch(function(){}); }
-      flashMsg("sv_copy");
+      // 本当にコピーできたときだけ「コピーしました」。できなければ手でコピーするよう知らせる(コードは選んだまま)
+      var done=function(ok){ flashMsg(ok?"sv_copied":"sv_copy_fail"); };
+      var byHand=function(){ var ok=false; try{ ok=!!document.execCommand("copy"); }catch(e){} done(ok); };
+      try{ if(navigator.clipboard && navigator.clipboard.writeText) navigator.clipboard.writeText(ta.value).then(function(){ done(true); }, byHand); else byHand(); }catch(e){ byHand(); }
     });
     document.getElementById("codeLoadBtn").addEventListener("click", function(){
       var ta=document.getElementById("codeArea"); var o=unb64(ta.value);
@@ -1437,10 +1457,13 @@
 <script>if("serviceWorker" in navigator){window.addEventListener("load",function(){navigator.serviceWorker.register("sw.js").catch(function(){});});}</script>
 <!-- Farcaster Mini App SDK・読み込み完了を通知しスプラッシュを閉じる(Farcaster外では無害にスキップ)🔴web側専用 -->
 <script type="module">
-  try {
-    const { sdk } = await import("https://esm.sh/@farcaster/miniapp-sdk");
-    await sdk.actions.ready();
-  } catch (e) { /* Farcaster外では何もしない */ }
+  /* Farcaster の中(iframe / アプリの WebView)で開いたときだけ SDK を読む。ふつうのブラウザ・PWA では外へつながない */
+  if ((window.self !== window.top) || window.ReactNativeWebView) {
+    try {
+      const { sdk } = await import("https://esm.sh/@farcaster/miniapp-sdk");
+      await sdk.actions.ready();
+    } catch (e) { /* Farcaster外では何もしない */ }
+  }
 </script>
 </body>
 </html>

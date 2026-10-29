@@ -5,13 +5,12 @@
    ・その他(css/js/json/icon)はcache-first
    ・開発/検証用ファイル(_始まり)はキャッシュしない
    🔴 更新のたびに CACHE 名を必ず上げる(feedback-always-bump-version) */
-const CACHE = 'oto-v13';
+const CACHE = 'oto-v14';
 const ASSETS = [
   './',
   './index.html',
   './i18n.js',
   './record.js',
-  './i18n_translations.json',
   './manifest.json',
   './icons/icon-192.png',
   './icons/icon-512.png'

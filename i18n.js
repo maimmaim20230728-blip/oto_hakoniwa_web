@@ -272,6 +272,23 @@
   };
   for (var _l5 in SAVEFAILKEYS) { if (I18N[_l5]) { for (var _k5 in SAVEFAILKEYS[_l5]) { I18N[_l5][_k5] = SAVEFAILKEYS[_l5][_k5]; } } }
 
+  /* 盤面コードの「コピー」の結果(2026-10-30)と、録音の残り時間(record.js・{t} に「4:48」など)。全12言語。 */
+  var COPYRECKEYS = {
+    ja:{ sv_copied:"コピーしました", sv_copy_fail:"コピーできませんでした。コードを選んで、手でコピーしてください", recLeft:"あと {t}" },
+    en:{ sv_copied:"Copied", sv_copy_fail:"Couldn't copy. Select the code and copy it by hand", recLeft:"{t} left" },
+    de:{ sv_copied:"Kopiert", sv_copy_fail:"Kopieren ging nicht. Bitte den Code markieren und selbst kopieren", recLeft:"noch {t}" },
+    fr:{ sv_copied:"Copié", sv_copy_fail:"Copie impossible. Sélectionne le code et copie-le toi-même", recLeft:"reste {t}" },
+    es:{ sv_copied:"Copiado", sv_copy_fail:"No se pudo copiar. Selecciona el código y cópialo a mano", recLeft:"quedan {t}" },
+    it:{ sv_copied:"Copiato", sv_copy_fail:"Copia non riuscita. Seleziona il codice e copialo a mano", recLeft:"restano {t}" },
+    pt:{ sv_copied:"Copiado", sv_copy_fail:"Não foi possível copiar. Selecione o código e copie à mão", recLeft:"faltam {t}" },
+    nl:{ sv_copied:"Gekopieerd", sv_copy_fail:"Kopiëren lukte niet. Selecteer de code en kopieer hem zelf", recLeft:"nog {t}" },
+    sv:{ sv_copied:"Kopierat", sv_copy_fail:"Kunde inte kopiera. Markera koden och kopiera den själv", recLeft:"{t} kvar" },
+    ko:{ sv_copied:"복사했어요", sv_copy_fail:"복사하지 못했어요. 코드를 선택해 직접 복사해 주세요", recLeft:"{t} 남음" },
+    zh:{ sv_copied:"已复制", sv_copy_fail:"无法复制。请选中代码手动复制", recLeft:"剩余 {t}" },
+    ar:{ sv_copied:"تم النسخ", sv_copy_fail:"تعذّر النسخ. حدّد الرمز وانسخه يدويًا", recLeft:"متبقٍ {t}" }
+  };
+  for (var _l6 in COPYRECKEYS) { if (I18N[_l6]) { for (var _k6 in COPYRECKEYS[_l6]) { I18N[_l6][_k6] = COPYRECKEYS[_l6][_k6]; } } }
+
   /* はじめての 遊びかた(2026-09-30・index.html の openGuide)。全12言語。
      g_heads / g_bodies は ページの配列(ja と同じ数)。本文の {play} などは openGuide が その言語の画面の文字に さしかえる(ボタン名が画面と かならず同じ)。
      さいごの ボタンは タイトルと同じ「▶ + start」(押すと 案内を とじて はじめる)。g_again は タイトルの「? 遊びかた」の文字 */
