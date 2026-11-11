@@ -64,6 +64,11 @@
   input[type=range]{flex:1 1 40px; min-width:0; accent-color:var(--mizu);}
   .val{font-size:11px; color:#9fb4c6; width:26px; text-align:right;}
   .hint{font-size:10.5px; color:#6f8498; text-align:center; margin-top:4px;}
+  /* 「全部消す」「自動配置に戻す」「枠の読み込み」の直後に数秒だけ出す「元に戻す」(盤面の下・タイトルの下に隠れる) */
+  #undoBar{position:absolute; left:0; right:0; bottom:10px; display:flex; justify-content:center; pointer-events:none;}
+  #undoBar button{pointer-events:auto; min-height:44px; padding:0 22px; border-radius:22px; background:var(--midori); color:#04140a;
+    border:0; font-size:14px; font-weight:800; box-shadow:0 2px 10px rgba(0,0,0,.45);}
+  #slotInfo{font-size:11px; color:#9fb4c6; min-width:0; flex:1; text-align:left; unicode-bidi:plaintext;}
   /* セクション間の区切り線（文字と同じ色・太さ）*/
   #playPanel > .row, #playPanel > .hint,
   #editPanel > .row, #editPanel > .hint{ border-top:1px solid #9fb4c6; padding-top:7px; }
@@ -107,6 +112,7 @@
 <div id="wrap">
   <div id="stage">
     <canvas id="cv"></canvas>
+    <div id="undoBar" style="display:none" role="status" aria-live="polite"><button type="button" id="undoBtn" data-i18n="undo">元に戻す</button></div>
     <div id="startOverlay">
       <h2>音の箱庭</h2>
       <div class="btn" id="startGo" role="button" tabindex="0">▶ <span data-i18n="start">はじめる</span></div>
@@ -284,10 +290,15 @@
         <span class="lbl" data-i18n="sv_save">保存</span>
         <div class="seg" id="slotSeg"></div>
       </div>
+      <div class="row" style="padding-top:0; border-top:0">
+        <span class="lbl"></span>
+        <span id="slotInfo" aria-live="polite"></span>
+      </div>
       <div class="row">
         <span class="lbl"></span>
         <div class="seg">
           <button class="chip" id="slotDelBtn" data-i18n="sv_del" style="flex:1 1 60px">消す</button>
+          <button class="chip" id="slotOwBtn" data-i18n="sv_ow" style="flex:1 1 60px">上書き</button>
           <button class="chip" id="codeShowBtn" data-i18n="sv_show" style="flex:1 1 100px">コードを見る</button>
           <button class="chip" id="codeImportBtn" data-i18n="sv_import" style="flex:1 1 100px">コードで読む</button>
         </div>
@@ -770,6 +781,7 @@
     document.getElementById('playPanel').style.display = editMode?'none':'';
     document.getElementById('editPanel').style.display = editMode?'':'none';
     selected=null;
+    hideUndo(); setOvMode(false);   // 「元に戻す」と「上書き」は つくるの画面を出るとき かたづける(うっかり上書きしない)
     if(editMode){ balls=[]; configureSliders(activeTargetKind()); }
   }
 
@@ -777,9 +789,28 @@
   var last=0;
   function frame(ts){
     requestAnimationFrame(frame);
-    if(!started){ return; }
+    if(!started){ demoFrame(ts); return; }
     var dt=Math.min(0.033,(ts-last)/1000||0.016); last=ts;
     step(dt);   // 編集モードでも物理を動かす＝置きながら球を落として試せる
+    draw();
+  }
+  // ---------- タイトルの「ためし聞き」(絵だけ・音なし・2026-11-11) ----------
+  // はじめる前の暗い画面だけでは 何のアプリか伝わりにくいので、タイトルの後ろの盤面に 球がゆっくり落ちる絵を薄く流す(タイトルの黒い幕ごしに うっすら見える)。
+  // 🔴音は「はじめる」を押すまで出さない決まりのまま: ここでは音の準備(ctx)を作らず、step の中の triggerNote も started のときだけ。
+  // はじめるを押したら start() が球と輪を空にして、本物の盤面から始める。動きを減らす設定(prefers-reduced-motion)の端末では流さない
+  var demoNext=0, demoOn=null;
+  function demoAllowed(){
+    if(demoOn===null){ try{ demoOn=!(window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches); }catch(e){ demoOn=true; } }
+    return demoOn;
+  }
+  function demoFrame(ts){
+    if(!demoAllowed() || !boardReady) return;
+    var dt=Math.min(0.033,(ts-last)/1000||0.016); last=ts;
+    if(ts>=demoNext){
+      demoNext=ts+2800;
+      if(balls.length<3) balls.push({x:dropX(W*(0.2+0.6*Math.random())), y:-10, vx:(Math.random()-0.5)*30, vy:0, r:Math.max(9,W*0.024), mat:material, col:BALLCOL[material]||"#bfeaff", hits:0});
+    }
+    step(dt*0.5);    // ゆっくり
     draw();
   }
   function step(dt){
@@ -802,7 +833,7 @@
             b.vx-=1.5*vn*nx; b.vy-=1.5*vn*ny;
             b.vx+=(Math.random()-0.5)*60;      // 横の不揃いのみ（縦ゆらぎは詰まりの元なので撤去）
             b.vx*=0.99; b.vy*=0.99;
-            if(bd.cd<=0){ bd.glow=1; bd.cd=0.10; b.hits=(b.hits||0)+1; triggerNote(midiToFreq(bd.note), b.mat, quantize()); }
+            if(bd.cd<=0){ bd.glow=1; bd.cd=0.10; b.hits=(b.hits||0)+1; if(started) triggerNote(midiToFreq(bd.note), b.mat, quantize()); }
           } else {
             b.x+=nx*pen; b.y+=ny*pen;           // 貫入は全量押し出す
           }
@@ -1149,12 +1180,22 @@
 
   function start(){
     if(!started){
+      balls=[]; rings=[];   // タイトルで流していた絵だけの球を片づけてから はじめる
       initAudio(); started=true; barStart=ctx.currentTime;
       // はじめる前に点灯させた環境音・響きは、音の準備ができた今ここで鳴らし直す(点灯だけで無音になるのを防ぐ)
       var ons=document.querySelectorAll("#ambSeg button.on");
       for(var i=0;i<ons.length;i++){ var k=ons[i].getAttribute("data-amb"); if(AMB[k]){ try{ AMB[k](true); }catch(e){} } }
     }
+    resumeAudio();                                                   // 電話・ロックのあと止まったままの音を、はじめるでも動かし直す
     document.getElementById("startOverlay").style.display="none";   // 起動後もはじめる=常にオーバーレイを閉じる
+  }
+  // 端末のロックや電話のあと、Safari などで音の準備が suspended / interrupted のまま無音になることがある。
+  // はじめた後だけ(はじめる前は音を出さない決まり)、running でなければ resume() で動かし直す
+  function resumeAudio(){
+    try{
+      if(!started || !ctx || ctx.state==="running" || typeof ctx.resume!=="function") return;
+      var p=ctx.resume(); if(p && typeof p.catch==="function") p.catch(function(){});
+    }catch(e){}
   }
   function backToTitle(){ document.getElementById("startOverlay").style.display=""; }   // 言語変更等のためタイトルへ戻る
 
@@ -1184,6 +1225,7 @@
     var so=document.getElementById("startOverlay");
     if(so && so.style.display!=="none"){ minimizeApp(); return; }
     if(editMode && slotDelMode){ var b=document.getElementById("slotDelBtn"); if(b) b.click(); return; }
+    if(editMode && slotOvMode){ setOvMode(false); return; }
     backToTitle();
   }
   function watchBack(){
@@ -1348,11 +1390,51 @@
     }
   }
   function flashMsg(k){ var el=document.getElementById('codeMsg'); if(!el) return; el.textContent=(window.OtoI18n?OtoI18n.t(k):k); clearTimeout(el._t); el._t=setTimeout(function(){ el.textContent=''; }, 2500); }
+  // 枠の「保存日」(月/日 時:分)。言語に よらない数字だけ。選んだ枠の番号と ならべて #slotInfo に出す
+  function slotStamp(){ var d=new Date(); function p(n){ return n<10?"0"+n:""+n; } return (d.getMonth()+1)+"/"+d.getDate()+" "+p(d.getHours())+":"+p(d.getMinutes()); }
+  function showSlotInfo(i, s){
+    var el=document.getElementById('slotInfo'); if(!el) return;
+    el.textContent=(i+1)+((s && typeof s.t==="string" && s.t) ? "  "+s.t.slice(0,20) : "");
+  }
+  // 「上書き」: 押したあと 入っている枠を 1回だけ タップすると 今の盤面で上書き(空き枠なら ふつうの保存)。つくるを出る・もう一度押す・戻るで解除
+  var slotOvMode=false;
+  function setOvMode(on){
+    slotOvMode=!!on;
+    var b=document.getElementById('slotOwBtn'); if(b) b.classList.toggle('on', slotOvMode);
+    if(slotOvMode && slotDelMode){ var d=document.getElementById('slotDelBtn'); if(d) d.click(); }   // 「消す」とは同時に入れない
+  }
   function onSlot(i){
     var a=loadSlots();
     if(slotDelMode){ if(a[i]){ a[i]=null; saveSlots(a); renderSlots(); } return; }
-    if(a[i]){ var o=unb64(a[i].c); if(o && applyBoard(o)){ saveWip(); flashMsg('sv_loaded'); } else flashMsg('sv_bad'); }
-    else { a[i]={ c:b64(serializeBoard()) }; var okS=saveSlots(a); renderSlots(); flashMsg(okS?'sv_saved':'saveFail'); }   // 保存できなかったら「保存しました」は出さない
+    if(slotOvMode || !a[i]){
+      setOvMode(false);
+      a[i]={ c:b64(serializeBoard()), t:slotStamp() }; var okS=saveSlots(a); renderSlots(); flashMsg(okS?'sv_saved':'saveFail');   // 保存できなかったら「保存しました」は出さない
+      if(okS) showSlotInfo(i, a[i]);
+      return;
+    }
+    var o=unb64(a[i].c), snap=undoSnapshot();
+    if(o && applyBoard(o)){ saveWip(); flashMsg('sv_loaded'); showSlotInfo(i, a[i]); offerUndo(snap); } else flashMsg('sv_bad');
+  }
+
+  // ---------- 「元に戻す」(全部消す・自動配置に戻す・枠/コードの読み込みの直後だけ・数秒) ----------
+  // 確かめの画面は増やさず、直前の盤面を持っておき、押されたら盤面と落とし口だけ戻す(音階・材質・流れは今のまま)
+  var UNDO_MS=7000, undoSnap=null, undoTimer=null;
+  function undoSnapshot(){ return (boards.length || spouts.length) ? serializeBoard() : null; }   // 空の盤面は戻す意味がない
+  function hideUndo(){
+    undoSnap=null; if(undoTimer){ clearTimeout(undoTimer); undoTimer=null; }
+    var el=document.getElementById('undoBar'); if(el) el.style.display="none";
+  }
+  function offerUndo(snap){
+    if(!snap || !editMode) return;
+    hideUndo(); undoSnap=snap;
+    var el=document.getElementById('undoBar'); if(el) el.style.display="";
+    undoTimer=setTimeout(hideUndo, UNDO_MS);
+  }
+  function doUndo(){
+    var s=undoSnap; if(!s) return;
+    hideUndo();
+    s.s=scaleName; s.m=material; s.f=flowMode;
+    if(applyBoard(s)){ saveWip(); configureSliders(activeTargetKind()); }
   }
   function saveWip(){ try{ localStorage.setItem(WIP_KEY, b64(serializeBoard())); }catch(e){} }
   function restoreWip(){ try{ var s=localStorage.getItem(WIP_KEY); if(s){ var o=unb64(s); if(o) applyBoard(o); } }catch(e){} }
@@ -1379,7 +1461,7 @@
       if(!started){ return; }
       var r=cv.getBoundingClientRect();
       var x=(e.clientX-r.left)*(W/r.width), y=(e.clientY-r.top)*(H/r.height); // 画面→論理座標
-      if(editMode){ editPointerDown(x,y); } else { dropBall(x); }
+      if(editMode){ hideUndo(); editPointerDown(x,y); } else { dropBall(x); }   // 盤面を触ったら「元に戻す」は引っこめる(あとの編集を消さない)
     });
     cv.addEventListener("pointermove", function(e){
       if(!started || !editMode || !dragging) return;
@@ -1399,9 +1481,10 @@
     document.getElementById("delBtn").addEventListener("click", function(){
       if(selected){ var i=boards.indexOf(selected); if(i>=0) boards.splice(i,1); selected=null; configureSliders(activeTargetKind()); saveWip(); }
     });
-    document.getElementById("resetBtn").addEventListener("click", function(){ buildBoards(); selected=null; saveWip(); });
+    document.getElementById("resetBtn").addEventListener("click", function(){ var snap=undoSnapshot(); buildBoards(); selected=null; saveWip(); offerUndo(snap); });
     seg("flowSeg","data-flow", function(v){ flowMode=v; spoutIdx=0; saveWip(); });
-    document.getElementById("clearAllBtn").addEventListener("click", function(){ boards=[]; spouts=[]; selected=null; spoutIdx=0; configureSliders(activeTargetKind()); saveWip(); });
+    document.getElementById("clearAllBtn").addEventListener("click", function(){ var snap=undoSnapshot(); boards=[]; spouts=[]; selected=null; spoutIdx=0; configureSliders(activeTargetKind()); saveWip(); offerUndo(snap); });
+    document.getElementById("undoBtn").addEventListener("click", doUndo);
 
     seg("matSeg","data-mat", function(v){ material=v; });
     seg("scaleSeg","data-scale", function(v){ scaleName=v; repitchBoards(); });
@@ -1419,7 +1502,8 @@
     document.getElementById("slotSeg").addEventListener("click", function(e){
       var t=e.target.closest("button"); if(!t) return; onSlot(+t.getAttribute("data-slot"));
     });
-    document.getElementById("slotDelBtn").addEventListener("click", function(){ slotDelMode=!slotDelMode; this.classList.toggle("on",slotDelMode); });
+    document.getElementById("slotDelBtn").addEventListener("click", function(){ slotDelMode=!slotDelMode; this.classList.toggle("on",slotDelMode); if(slotDelMode) setOvMode(false); });
+    document.getElementById("slotOwBtn").addEventListener("click", function(){ setOvMode(!slotOvMode); });
     document.getElementById("codeShowBtn").addEventListener("click", function(){
       var box=document.getElementById("codeBox"), ta=document.getElementById("codeArea");
       box.style.display=""; ta.value=b64(serializeBoard()); ta.focus(); ta.select();
@@ -1436,10 +1520,13 @@
       try{ if(navigator.clipboard && navigator.clipboard.writeText) navigator.clipboard.writeText(ta.value).then(function(){ done(true); }, byHand); else byHand(); }catch(e){ byHand(); }
     });
     document.getElementById("codeLoadBtn").addEventListener("click", function(){
-      var ta=document.getElementById("codeArea"); var o=unb64(ta.value);
-      if(o && applyBoard(o)){ saveWip(); flashMsg("sv_loaded"); } else { flashMsg("sv_bad"); }
+      var ta=document.getElementById("codeArea"); var o=unb64(ta.value), snap=undoSnapshot();
+      if(o && applyBoard(o)){ saveWip(); flashMsg("sv_loaded"); offerUndo(snap); } else { flashMsg("sv_bad"); }
     });
-    document.addEventListener("visibilitychange", function(){ if(document.visibilityState==="hidden" && editMode) saveWip(); });
+    document.addEventListener("visibilitychange", function(){
+      if(document.visibilityState==="hidden" && editMode) saveWip();
+      if(document.visibilityState==="visible") resumeAudio();
+    });
     window.addEventListener("pagehide", function(){ if(editMode) saveWip(); });
 
     // 言語切替時: 静的ラベルは i18n.js が更新。動的ラベル(スライダー)と録音の秒表示はここで作り直す

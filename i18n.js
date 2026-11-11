@@ -1,6 +1,6 @@
 /* 音の箱庭 / Oto no Hakoniwa 多言語テーブル
    ・var I18N = { ja, en, de, fr, es, it, pt, nl, sv, ko, zh, ar }(全12言語・フラット辞書)
-   ・ja が正。他言語は i18n_translations.json 由来。キー構造は全言語一致
+   ・ja が正。他言語もこのファイルに持つ(i18n_translations.json は 2026-11-11 に外した)。キー構造は全言語一致
    ・言語判定 = localStorage 優先 → navigator.language 先頭2文字 → ja
    ・window.OtoI18n = { t, applyLang, langs } を公開
    ・ar のみ dir=rtl(他は ltr)。Canvas 座標は反転しない(UIのみ反転) */
@@ -146,74 +146,74 @@
      既存の検証済み訳には触れず、ここでまとめて足す。値は二重引用符(アポストロフィ対策)。 */
   var NEWKEYS = {
     ja: {
-      s_lively:"賑やか", lang:"言語", rec:"録音", recStart:"● 録音する", recStop:"■ 停止", range:"範囲", selection:"選択", selAll:"全体", preview:"▶ 試聴", exportLbl:"書き出し", saveWav:"WAVで保存", saveMp3:"MP3で保存", redo:"やり直す", secUnit:"秒", converting:"変換中…",
-      errNoRec:"この端末は録音に未対応です。", errDecode:"録音の変換に失敗しました。もう一度お試しください。", errMp3:"MP3エンコーダを読み込めませんでした。WAVでの保存をご利用ください。",
+      s_lively:"賑やか", lang:"言語", rec:"録音", recStart:"● 録音する", recStop:"■ 停止", range:"範囲", selection:"選択", selAll:"全体", preview:"▶ 試聴", exportLbl:"書き出し", saveWav:"WAVで保存", redo:"やり直す", secUnit:"秒",
+      errNoRec:"この端末は録音に未対応です。", errDecode:"録音の変換に失敗しました。もう一度お試しください。",
       cc_line1:"つくった音源は クリエイティブ・コモンズ 表示-継承 4.0（CC BY-SA 4.0）で提供します。イベントでも商用でも自由に使えます。", cc_line2:"お願い：クレジット「介護と支援の相談どころ　そよぎ」の表示と、改変・再配布時の同一ライセンス（継承）でのご共有を。", cc_full:"ライセンス全文",
       editHint:"「落とし口」＝タップで設置(最大5)＋試し落下、既存タップで再テスト。ペグ(楕円・たて=よこで丸)/多角形(角数3〜8)/星/板はタップで置く→選んでドラッグ・スライダーで大きさや傾き。消しゴムは全部タップで消去(なぞって連続も)。流れ＝順番/ランダム/全体ランダム。多角形や星を組んで、それでも鳴る配置を工夫しよう。"
     },
     en: {
-      s_lively:"Lively", lang:"Language", rec:"Record", recStart:"● Record", recStop:"■ Stop", range:"Range", selection:"Selection", selAll:"All", preview:"▶ Preview", exportLbl:"Export", saveWav:"Save as WAV", saveMp3:"Save as MP3", redo:"Start over", secUnit:"sec", converting:"Converting…",
-      errNoRec:"This device does not support recording.", errDecode:"Failed to process the recording. Please try again.", errMp3:"Could not load the MP3 encoder. Please save as WAV instead.",
+      s_lively:"Lively", lang:"Language", rec:"Record", recStart:"● Record", recStop:"■ Stop", range:"Range", selection:"Selection", selAll:"All", preview:"▶ Preview", exportLbl:"Export", saveWav:"Save as WAV", redo:"Start over", secUnit:"sec",
+      errNoRec:"This device does not support recording.", errDecode:"Failed to process the recording. Please try again.",
       cc_line1:"The sounds you create are provided under Creative Commons Attribution-ShareAlike 4.0 (CC BY-SA 4.0). Feel free to use them anywhere, including at events and commercially.", cc_line2:"Please show the credit \"介護と支援の相談どころ　そよぎ\" and, when modifying or redistributing, share under the same license (ShareAlike).", cc_full:"Full license text",
       editHint:"Spout = tap to place (up to 5) and drop a test ball; tap an existing one to test it again. Peg (ellipse; equal height and width = round) / Polygon (3-8 sides) / Star / Board: tap to place, then select and drag; use the sliders for size and tilt. Eraser: tap anything to delete (drag to erase several in a row). Flow = In order / Random / Random all. Try combining polygons and stars, and find layouts that still make sound."
     },
     de: {
-      s_lively:"Lebhaft", lang:"Sprache", rec:"Aufnahme", recStart:"● Aufnehmen", recStop:"■ Stopp", range:"Bereich", selection:"Auswahl", selAll:"Alles", preview:"▶ Anhören", exportLbl:"Export", saveWav:"Als WAV speichern", saveMp3:"Als MP3 speichern", redo:"Neu beginnen", secUnit:"Sek.", converting:"Wird umgewandelt…",
-      errNoRec:"Dieses Gerät unterstützt keine Aufnahme.", errDecode:"Die Aufnahme konnte nicht verarbeitet werden. Bitte versuche es noch einmal.", errMp3:"Der MP3-Encoder konnte nicht geladen werden. Bitte speichere stattdessen als WAV.",
+      s_lively:"Lebhaft", lang:"Sprache", rec:"Aufnahme", recStart:"● Aufnehmen", recStop:"■ Stopp", range:"Bereich", selection:"Auswahl", selAll:"Alles", preview:"▶ Anhören", exportLbl:"Export", saveWav:"Als WAV speichern", redo:"Neu beginnen", secUnit:"Sek.",
+      errNoRec:"Dieses Gerät unterstützt keine Aufnahme.", errDecode:"Die Aufnahme konnte nicht verarbeitet werden. Bitte versuche es noch einmal.",
       cc_line1:"Die Klänge, die du erstellst, werden unter Creative Commons Namensnennung-Weitergabe unter gleichen Bedingungen 4.0 (CC BY-SA 4.0) bereitgestellt. Frei nutzbar, auch bei Veranstaltungen und kommerziell.", cc_line2:"Bitte: Zeige die Namensnennung „介護と支援の相談どころ　そよぎ\" an und teile bei Änderung oder Weitergabe unter derselben Lizenz (Weitergabe unter gleichen Bedingungen).", cc_full:"Vollständiger Lizenztext",
       editHint:"Auslass = zum Platzieren tippen (bis zu 5) und eine Testkugel fallen lassen; tippe einen vorhandenen an, um erneut zu testen. Pin (Ellipse; gleiche Höhe und Breite = rund) / Vieleck (3 bis 8 Ecken) / Stern / Brett: zum Platzieren tippen, dann auswählen und ziehen; mit den Reglern Größe und Neigung einstellen. Radierer: alles antippen zum Löschen (zum durchgehenden Löschen darüberziehen). Ablauf = Der Reihe nach / Zufällig / Ganz zufällig. Kombiniere Vielecke und Sterne und finde Anordnungen, die trotzdem klingen."
     },
     fr: {
-      s_lively:"Animé", lang:"Langue", rec:"Enregistrement", recStart:"● Enregistrer", recStop:"■ Arrêter", range:"Plage", selection:"Sélection", selAll:"Tout", preview:"▶ Écouter", exportLbl:"Exportation", saveWav:"Sauvegarder en WAV", saveMp3:"Sauvegarder en MP3", redo:"Recommencer", secUnit:"s", converting:"Conversion…",
-      errNoRec:"Cet appareil ne prend pas en charge l'enregistrement.", errDecode:"Le traitement de l'enregistrement a échoué. Veuillez réessayer.", errMp3:"Impossible de charger l'encodeur MP3. Veuillez sauvegarder en WAV.",
+      s_lively:"Animé", lang:"Langue", rec:"Enregistrement", recStart:"● Enregistrer", recStop:"■ Arrêter", range:"Plage", selection:"Sélection", selAll:"Tout", preview:"▶ Écouter", exportLbl:"Exportation", saveWav:"Sauvegarder en WAV", redo:"Recommencer", secUnit:"s",
+      errNoRec:"Cet appareil ne prend pas en charge l'enregistrement.", errDecode:"Le traitement de l'enregistrement a échoué. Veuillez réessayer.",
       cc_line1:"Les sons que vous créez sont fournis sous licence Creative Commons Attribution - Partage dans les mêmes conditions 4.0 (CC BY-SA 4.0). Vous pouvez les utiliser librement, y compris lors d'événements et à des fins commerciales.", cc_line2:"Merci d'afficher le crédit 「介護と支援の相談どころ　そよぎ」 et, en cas de modification ou de redistribution, de partager sous la même licence (Partage dans les mêmes conditions).", cc_full:"Texte complet de la licence",
       editHint:"Sortie = touchez pour placer (5 max) et lâcher une bille d'essai ; touchez une sortie existante pour la retester. Picot (ellipse ; hauteur = largeur pour un rond) / Polygone (3 à 8 côtés) / Étoile / Planche : touchez pour placer, puis sélectionnez et faites glisser ; réglez la taille et l'inclinaison avec les curseurs. Gomme : touchez n'importe quel élément pour l'effacer (glissez pour effacer en continu). Enchaînement = En ordre / Aléatoire / Tout aléatoire. Assemblez des polygones et des étoiles, et trouvez des dispositions qui sonnent quand même."
     },
     es: {
-      s_lively:"Animada", lang:"Idioma", rec:"Grabación", recStart:"● Grabar", recStop:"■ Detener", range:"Rango", selection:"Selección", selAll:"Todo", preview:"▶ Escuchar", exportLbl:"Exportar", saveWav:"Guardar como WAV", saveMp3:"Guardar como MP3", redo:"Empezar de nuevo", secUnit:"seg", converting:"Convirtiendo…",
-      errNoRec:"Este dispositivo no admite la grabación.", errDecode:"No se pudo procesar la grabación. Inténtalo de nuevo.", errMp3:"No se pudo cargar el codificador de MP3. Guarda como WAV en su lugar.",
+      s_lively:"Animada", lang:"Idioma", rec:"Grabación", recStart:"● Grabar", recStop:"■ Detener", range:"Rango", selection:"Selección", selAll:"Todo", preview:"▶ Escuchar", exportLbl:"Exportar", saveWav:"Guardar como WAV", redo:"Empezar de nuevo", secUnit:"seg",
+      errNoRec:"Este dispositivo no admite la grabación.", errDecode:"No se pudo procesar la grabación. Inténtalo de nuevo.",
       cc_line1:"Los sonidos que crees se ofrecen bajo Creative Commons Atribución-CompartirIgual 4.0 (CC BY-SA 4.0). Puedes usarlos libremente, también en eventos y con fines comerciales.", cc_line2:"Te pedimos: muestra el crédito 「介護と支援の相談どころ　そよぎ」 y, al modificar o redistribuir, compártelo bajo la misma licencia (CompartirIgual).", cc_full:"Texto completo de la licencia",
       editHint:"«Salida» = toca para colocar (hasta 5) y soltar una bola de prueba; toca una ya puesta para volver a probar. Clavija (elipse; alto igual a ancho = redonda) / Polígono (3 a 8 lados) / Estrella / Tabla: toca para colocar, luego selecciona y arrastra; usa los deslizadores para el tamaño y la inclinación. Borrador: toca cualquier cosa para borrar (arrastra para borrar de forma continua). Flujo = En orden / Aleatorio / Aleatorio total. Combina polígonos y estrellas y busca disposiciones que aun así suenen."
     },
     it: {
-      s_lively:"Vivace", lang:"Lingua", rec:"Registrazione", recStart:"● Registra", recStop:"■ Ferma", range:"Intervallo", selection:"Selezione", selAll:"Tutto", preview:"▶ Ascolta", exportLbl:"Esporta", saveWav:"Salva in WAV", saveMp3:"Salva in MP3", redo:"Ricomincia", secUnit:"sec", converting:"Conversione…",
-      errNoRec:"Questo dispositivo non supporta la registrazione.", errDecode:"Non è stato possibile elaborare la registrazione. Riprova.", errMp3:"Non è stato possibile caricare l'encoder MP3. Salva invece in WAV.",
+      s_lively:"Vivace", lang:"Lingua", rec:"Registrazione", recStart:"● Registra", recStop:"■ Ferma", range:"Intervallo", selection:"Selezione", selAll:"Tutto", preview:"▶ Ascolta", exportLbl:"Esporta", saveWav:"Salva in WAV", redo:"Ricomincia", secUnit:"sec",
+      errNoRec:"Questo dispositivo non supporta la registrazione.", errDecode:"Non è stato possibile elaborare la registrazione. Riprova.",
       cc_line1:"I suoni che crei sono forniti con licenza Creative Commons Attribuzione-Condividi allo stesso modo 4.0 (CC BY-SA 4.0). Puoi usarli liberamente, anche in eventi e per scopi commerciali.", cc_line2:"Ti chiediamo: mostra il credito 「介護と支援の相談どころ　そよぎ」 e, in caso di modifica o ridistribuzione, condividi con la stessa licenza (Condividi allo stesso modo).", cc_full:"Testo completo della licenza",
       editHint:"Bocchetta = tocca per posizionarla (max 5) e far cadere una pallina di prova; tocca una bocchetta esistente per riprovare. Piolo (ellisse; altezza = larghezza per un tondo) / Poligono (da 3 a 8 lati) / Stella / Barra si posizionano toccando, poi seleziona e trascina; con i cursori regoli dimensione e inclinazione. La gomma cancella tutto con un tocco (trascina per cancellare di seguito). Flusso = In ordine / Casuale / Tutto casuale. Prova a comporre poligoni e stelle e trova la disposizione che li faccia comunque suonare."
     },
     pt: {
-      s_lively:"Animada", lang:"Idioma", rec:"Gravação", recStart:"● Gravar", recStop:"■ Parar", range:"Intervalo", selection:"Seleção", selAll:"Tudo", preview:"▶ Ouvir", exportLbl:"Exportar", saveWav:"Salvar em WAV", saveMp3:"Salvar em MP3", redo:"Recomeçar", secUnit:"s", converting:"Convertendo…",
-      errNoRec:"Este dispositivo não é compatível com gravação.", errDecode:"Não foi possível processar a gravação. Tente novamente.", errMp3:"Não foi possível carregar o codificador de MP3. Salve em WAV.",
+      s_lively:"Animada", lang:"Idioma", rec:"Gravação", recStart:"● Gravar", recStop:"■ Parar", range:"Intervalo", selection:"Seleção", selAll:"Tudo", preview:"▶ Ouvir", exportLbl:"Exportar", saveWav:"Salvar em WAV", redo:"Recomeçar", secUnit:"s",
+      errNoRec:"Este dispositivo não é compatível com gravação.", errDecode:"Não foi possível processar a gravação. Tente novamente.",
       cc_line1:"Os sons que você criar são disponibilizados sob a licença Creative Commons Atribuição-CompartilhaIgual 4.0 (CC BY-SA 4.0). Podem ser usados livremente, inclusive em eventos e para fins comerciais.", cc_line2:"Pedimos: mostre o crédito \"介護と支援の相談どころ　そよぎ\" e, ao modificar ou redistribuir, compartilhe sob a mesma licença (CompartilhaIgual).", cc_full:"Texto completo da licença",
       editHint:"Saída = toque para colocar (até 5) e soltar uma bola de teste; toque em uma já existente para testar de novo. Pino (elipse; altura e largura iguais = redondo) / Polígono (3 a 8 lados) / Estrela / Placa: toque para colocar, depois selecione e arraste; use os controles deslizantes para o tamanho e a inclinação. Borracha: toque em qualquer coisa para apagar (arraste para apagar em sequência). Fluxo = Em ordem / Aleatório / Aleatório total. Combine polígonos e estrelas e descubra arranjos que ainda assim produzam som."
     },
     nl: {
-      s_lively:"Levendig", lang:"Taal", rec:"Opname", recStart:"● Opnemen", recStop:"■ Stoppen", range:"Bereik", selection:"Selectie", selAll:"Alles", preview:"▶ Beluisteren", exportLbl:"Exporteren", saveWav:"Opslaan als WAV", saveMp3:"Opslaan als MP3", redo:"Opnieuw", secUnit:"sec", converting:"Omzetten…",
-      errNoRec:"Dit apparaat ondersteunt geen opname.", errDecode:"Het verwerken van de opname is mislukt. Probeer het opnieuw.", errMp3:"De MP3-encoder kon niet worden geladen. Sla het op als WAV.",
+      s_lively:"Levendig", lang:"Taal", rec:"Opname", recStart:"● Opnemen", recStop:"■ Stoppen", range:"Bereik", selection:"Selectie", selAll:"Alles", preview:"▶ Beluisteren", exportLbl:"Exporteren", saveWav:"Opslaan als WAV", redo:"Opnieuw", secUnit:"sec",
+      errNoRec:"Dit apparaat ondersteunt geen opname.", errDecode:"Het verwerken van de opname is mislukt. Probeer het opnieuw.",
       cc_line1:"De geluiden die je maakt, worden aangeboden onder Creative Commons Naamsvermelding-GelijkDelen 4.0 (CC BY-SA 4.0). Vrij te gebruiken, ook bij evenementen en commercieel.", cc_line2:"Verzoek: vermeld de credit 「介護と支援の相談どころ　そよぎ」 en deel bij aanpassing of herdistributie onder dezelfde licentie (GelijkDelen).", cc_full:"Volledige licentietekst",
       editHint:"Valopening = tik om te plaatsen (max. 5) en laat een testbal vallen; tik op een bestaande om opnieuw te testen. Pen (ellips; gelijke hoogte en breedte = rond) / Veelhoek (3 tot 8 hoeken) / Ster / Plank: tik om te plaatsen, selecteer daarna en sleep; gebruik de schuiven voor grootte en helling. Gum: tik op iets om het te wissen (sleep om door te blijven wissen). Verloop = Op volgorde / Willekeurig / Overal willekeurig. Combineer veelhoeken en sterren en zoek opstellingen die tóch geluid maken."
     },
     sv: {
-      s_lively:"Livlig", lang:"Språk", rec:"Inspelning", recStart:"● Spela in", recStop:"■ Stoppa", range:"Område", selection:"Markering", selAll:"Allt", preview:"▶ Förhandslyssna", exportLbl:"Exportera", saveWav:"Spara som WAV", saveMp3:"Spara som MP3", redo:"Börja om", secUnit:"sek", converting:"Konverterar…",
-      errNoRec:"Den här enheten stöder inte inspelning.", errDecode:"Det gick inte att bearbeta inspelningen. Försök igen.", errMp3:"Det gick inte att läsa in MP3-kodaren. Spara som WAV i stället.",
+      s_lively:"Livlig", lang:"Språk", rec:"Inspelning", recStart:"● Spela in", recStop:"■ Stoppa", range:"Område", selection:"Markering", selAll:"Allt", preview:"▶ Förhandslyssna", exportLbl:"Exportera", saveWav:"Spara som WAV", redo:"Börja om", secUnit:"sek",
+      errNoRec:"Den här enheten stöder inte inspelning.", errDecode:"Det gick inte att bearbeta inspelningen. Försök igen.",
       cc_line1:"Ljuden du skapar tillhandahålls under Creative Commons Erkännande-DelaLika 4.0 (CC BY-SA 4.0). Fria att använda, även på evenemang och kommersiellt.", cc_line2:"En önskan: visa krediteringen ”介護と支援の相談どころ　そよぎ” och dela under samma licens (DelaLika) när du ändrar eller vidaredistribuerar.", cc_full:"Fullständig licenstext",
       editHint:"Utlopp = tryck för att placera (max 5) och släpp en testboll, tryck på ett befintligt för att testa igen. Pinne (ellips, lika höjd och bredd = rund) / Polygon (3-8 hörn) / Stjärna / Platta: tryck för att placera, markera sedan och dra, använd reglagen för storlek och lutning. Radera: tryck på vad som helst för att ta bort (dra för att radera i följd). Flöde = I ordning / Slumpvis / Slump överallt. Kombinera polygoner och stjärnor och hitta placeringar som ändå ger ljud."
     },
     ko: {
-      s_lively:"경쾌함", lang:"언어", rec:"녹음", recStart:"● 녹음하기", recStop:"■ 정지", range:"범위", selection:"선택", selAll:"전체", preview:"▶ 미리 듣기", exportLbl:"내보내기", saveWav:"WAV로 저장", saveMp3:"MP3로 저장", redo:"다시 하기", secUnit:"초", converting:"변환 중…",
-      errNoRec:"이 기기는 녹음을 지원하지 않습니다.", errDecode:"녹음 변환에 실패했습니다. 다시 시도해 주세요.", errMp3:"MP3 인코더를 불러오지 못했습니다. WAV로 저장해 주세요.",
+      s_lively:"경쾌함", lang:"언어", rec:"녹음", recStart:"● 녹음하기", recStop:"■ 정지", range:"범위", selection:"선택", selAll:"전체", preview:"▶ 미리 듣기", exportLbl:"내보내기", saveWav:"WAV로 저장", redo:"다시 하기", secUnit:"초",
+      errNoRec:"이 기기는 녹음을 지원하지 않습니다.", errDecode:"녹음 변환에 실패했습니다. 다시 시도해 주세요.",
       cc_line1:"만든 음원은 크리에이티브 커먼즈 저작자표시-동일조건변경허락 4.0(CC BY-SA 4.0)으로 제공됩니다. 행사에서도 상업적으로도 자유롭게 사용할 수 있어요.", cc_line2:"부탁드려요: 크레딧 「介護と支援の相談どころ　そよぎ」를 표시해 주시고, 변경하거나 재배포할 때는 같은 라이선스(동일조건변경허락)로 공유해 주세요.", cc_full:"라이선스 전문",
       editHint:"「배출구」＝탭해서 설치(최대 5개)하고 시험 삼아 공을 떨어뜨려요. 기존 것을 탭하면 다시 테스트. 페그(타원·세로=가로면 원형)/다각형(각 수 3~8)/별/판은 탭해서 놓은 뒤 선택해서 드래그하고, 슬라이더로 크기나 기울기를 조절해요. 지우개는 아무거나 탭하면 삭제(문지르면 연속으로도). 흐름＝순서대로/랜덤/전체 랜덤. 다각형이나 별을 조합해서, 그래도 소리가 나는 배치를 궁리해 보세요."
     },
     zh: {
-      s_lively:"热闹", lang:"语言", rec:"录音", recStart:"● 录音", recStop:"■ 停止", range:"范围", selection:"选择", selAll:"全部", preview:"▶ 试听", exportLbl:"导出", saveWav:"保存为 WAV", saveMp3:"保存为 MP3", redo:"重新开始", secUnit:"秒", converting:"转换中…",
-      errNoRec:"此设备不支持录音。", errDecode:"录音转换失败。请再试一次。", errMp3:"无法加载 MP3 编码器。请改用 WAV 保存。",
+      s_lively:"热闹", lang:"语言", rec:"录音", recStart:"● 录音", recStop:"■ 停止", range:"范围", selection:"选择", selAll:"全部", preview:"▶ 试听", exportLbl:"导出", saveWav:"保存为 WAV", redo:"重新开始", secUnit:"秒",
+      errNoRec:"此设备不支持录音。", errDecode:"录音转换失败。请再试一次。",
       cc_line1:"您制作的音源以 知识共享 署名-相同方式共享 4.0（CC BY-SA 4.0）提供。无论是活动还是商用，都可以自由使用。", cc_line2:"恳请：标注署名「介護と支援の相談どころ　そよぎ」，并在修改或再分发时以相同的许可（相同方式共享）进行共享。", cc_full:"许可证全文",
       editHint:"「落球口」＝点按放置（最多5个）并试落小球，点按已有的可重新测试。圆钉（椭圆，高=宽时为圆）/多边形（边数3〜8）/星形/挡板：点按放置→选中后拖动，用滑块调整大小和倾斜。橡皮擦：点按任意物体删除（拖动可连续擦除）。流程＝依次/随机/全屏随机。试着组合多边形和星形，找出仍能发出声音的布局吧。"
     },
     ar: {
-      s_lively:"حيوي", lang:"اللغة", rec:"التسجيل", recStart:"● تسجيل", recStop:"■ إيقاف", range:"النطاق", selection:"التحديد", selAll:"الكل", preview:"▶ استماع", exportLbl:"التصدير", saveWav:"حفظ كـ WAV", saveMp3:"حفظ كـ MP3", redo:"البدء من جديد", secUnit:"ث", converting:"جارٍ التحويل…",
-      errNoRec:"هذا الجهاز لا يدعم التسجيل.", errDecode:"تعذّرت معالجة التسجيل. يُرجى المحاولة مرة أخرى.", errMp3:"تعذّر تحميل مُرمِّز MP3. يُرجى الحفظ بصيغة WAV بدلاً من ذلك.",
+      s_lively:"حيوي", lang:"اللغة", rec:"التسجيل", recStart:"● تسجيل", recStop:"■ إيقاف", range:"النطاق", selection:"التحديد", selAll:"الكل", preview:"▶ استماع", exportLbl:"التصدير", saveWav:"حفظ كـ WAV", redo:"البدء من جديد", secUnit:"ث",
+      errNoRec:"هذا الجهاز لا يدعم التسجيل.", errDecode:"تعذّرت معالجة التسجيل. يُرجى المحاولة مرة أخرى.",
       cc_line1:"المقاطع الصوتية التي تصنعها متاحة بموجب رخصة المشاع الإبداعي: نَسب المُصنَّف-الترخيص بالمثل 4.0 (CC BY-SA 4.0). يمكنك استخدامها بحرية، في الفعاليات وللأغراض التجارية أيضاً.", cc_line2:"رجاءً: اعرض حقوق النَّسب 「介護と支援の相談どころ　そよぎ」، وعند التعديل أو إعادة التوزيع شارِكها بالترخيص نفسه (الترخيص بالمثل).", cc_full:"النص الكامل للرخصة",
       editHint:"«فتحة الإسقاط» = انقر للإضافة (حتى 5) مع إسقاط كرة تجريبية، وانقر على واحدة موجودة لإعادة الاختبار. الوتد (بيضاوي؛ عندما يتساوى الطول مع العرض يصبح دائرياً) / المضلّع (عدد الأضلاع من 3 إلى 8) / النجمة / اللوح: انقر لوضعها ثم اخترها واسحبها، واستخدم أشرطة التمرير لضبط الحجم والميل. الممحاة: انقر على أي شيء لمسحه (اسحب للمسح المتواصل). التدفّق = بالترتيب / عشوائي / عشوائي كلّي. جرّب تركيب المضلّعات والنجوم وابتكر ترتيباً يظل يُصدر الصوت."
     }
@@ -239,18 +239,18 @@
 
   /* つくるモードの「保存(10枠)/譲渡・バックアップ用コード」のUI文言。全12言語。 */
   var SAVEKEYS = {
-    ja: { sv_save:"保存", sv_del:"消す", sv_show:"コードを見る", sv_import:"コードで読む", sv_copy:"コピー", sv_load:"読み込む", sv_saved:"保存しました", sv_loaded:"読み込みました", sv_bad:"コードが正しくありません", sv_full:"枠がいっぱいです", sv_hint:"あいてる枠=今の盤面を保存 / 入っている枠=読み込み。コードにすれば、ゆずる・バックアップができます" },
-    en: { sv_save:"Save", sv_del:"Delete", sv_show:"Show code", sv_import:"Load code", sv_copy:"Copy", sv_load:"Load", sv_saved:"Saved", sv_loaded:"Loaded", sv_bad:"Invalid code", sv_full:"All slots are full", sv_hint:"Empty slot = save this board / filled slot = load it. Turn it into a code to share or back up." },
-    de: { sv_save:"Speichern", sv_del:"Löschen", sv_show:"Code zeigen", sv_import:"Code laden", sv_copy:"Kopieren", sv_load:"Laden", sv_saved:"Gespeichert", sv_loaded:"Geladen", sv_bad:"Ungültiger Code", sv_full:"Alle Plätze belegt", sv_hint:"Leerer Platz = dieses Brett speichern / belegt = laden. Als Code zum Teilen oder Sichern." },
-    fr: { sv_save:"Enregistrer", sv_del:"Supprimer", sv_show:"Voir le code", sv_import:"Charger un code", sv_copy:"Copier", sv_load:"Charger", sv_saved:"Enregistré", sv_loaded:"Chargé", sv_bad:"Code invalide", sv_full:"Tous les emplacements sont pleins", sv_hint:"Emplacement vide = enregistrer ce plateau / rempli = charger. En code pour partager ou sauvegarder." },
-    es: { sv_save:"Guardar", sv_del:"Borrar", sv_show:"Ver código", sv_import:"Cargar código", sv_copy:"Copiar", sv_load:"Cargar", sv_saved:"Guardado", sv_loaded:"Cargado", sv_bad:"Código no válido", sv_full:"Todos los espacios están llenos", sv_hint:"Espacio vacío = guardar este tablero / lleno = cargar. Conviértelo en código para compartir o respaldar." },
-    it: { sv_save:"Salva", sv_del:"Elimina", sv_show:"Mostra codice", sv_import:"Carica codice", sv_copy:"Copia", sv_load:"Carica", sv_saved:"Salvato", sv_loaded:"Caricato", sv_bad:"Codice non valido", sv_full:"Tutti gli spazi sono pieni", sv_hint:"Spazio vuoto = salva questo tavolo / pieno = carica. In codice per condividere o salvare." },
-    pt: { sv_save:"Salvar", sv_del:"Excluir", sv_show:"Ver código", sv_import:"Carregar código", sv_copy:"Copiar", sv_load:"Carregar", sv_saved:"Salvo", sv_loaded:"Carregado", sv_bad:"Código inválido", sv_full:"Todos os espaços estão cheios", sv_hint:"Espaço vazio = salvar este tabuleiro / cheio = carregar. Em código para compartilhar ou fazer backup." },
-    nl: { sv_save:"Opslaan", sv_del:"Verwijderen", sv_show:"Code tonen", sv_import:"Code laden", sv_copy:"Kopiëren", sv_load:"Laden", sv_saved:"Opgeslagen", sv_loaded:"Geladen", sv_bad:"Ongeldige code", sv_full:"Alle plekken zijn vol", sv_hint:"Leeg vak = dit bord opslaan / gevuld = laden. Als code om te delen of back-uppen." },
-    sv: { sv_save:"Spara", sv_del:"Ta bort", sv_show:"Visa kod", sv_import:"Läs in kod", sv_copy:"Kopiera", sv_load:"Läs in", sv_saved:"Sparat", sv_loaded:"Inläst", sv_bad:"Ogiltig kod", sv_full:"Alla platser är fulla", sv_hint:"Tom plats = spara denna bräda / fylld = läs in. Som kod för att dela eller säkerhetskopiera." },
-    ko: { sv_save:"저장", sv_del:"삭제", sv_show:"코드 보기", sv_import:"코드로 불러오기", sv_copy:"복사", sv_load:"불러오기", sv_saved:"저장했어요", sv_loaded:"불러왔어요", sv_bad:"코드가 올바르지 않아요", sv_full:"칸이 가득 찼어요", sv_hint:"빈 칸=지금 판을 저장 / 채워진 칸=불러오기. 코드로 만들면 남에게 주거나 백업할 수 있어요." },
-    zh: { sv_save:"保存", sv_del:"删除", sv_show:"查看代码", sv_import:"用代码读取", sv_copy:"复制", sv_load:"读取", sv_saved:"已保存", sv_loaded:"已读取", sv_bad:"代码无效", sv_full:"所有格子已满", sv_hint:"空格子=保存当前布局 / 已用格子=读取。做成代码即可赠送或备份。" },
-    ar: { sv_save:"حفظ", sv_del:"حذف", sv_show:"عرض الرمز", sv_import:"تحميل رمز", sv_copy:"نسخ", sv_load:"تحميل", sv_saved:"تم الحفظ", sv_loaded:"تم التحميل", sv_bad:"رمز غير صالح", sv_full:"كل الخانات ممتلئة", sv_hint:"خانة فارغة = احفظ هذا اللوح / ممتلئة = حمّله. حوّله إلى رمز للمشاركة أو النسخ الاحتياطي." }
+    ja: { sv_save:"保存", sv_del:"消す", sv_show:"コードを見る", sv_import:"コードで読む", sv_copy:"コピー", sv_load:"読み込む", sv_saved:"保存しました", sv_loaded:"読み込みました", sv_bad:"コードが正しくありません", sv_hint:"あいてる枠=今の盤面を保存 / 入っている枠=読み込み。コードにすれば、ゆずる・バックアップができます" },
+    en: { sv_save:"Save", sv_del:"Delete", sv_show:"Show code", sv_import:"Load code", sv_copy:"Copy", sv_load:"Load", sv_saved:"Saved", sv_loaded:"Loaded", sv_bad:"Invalid code", sv_hint:"Empty slot = save this board / filled slot = load it. Turn it into a code to share or back up." },
+    de: { sv_save:"Speichern", sv_del:"Löschen", sv_show:"Code zeigen", sv_import:"Code laden", sv_copy:"Kopieren", sv_load:"Laden", sv_saved:"Gespeichert", sv_loaded:"Geladen", sv_bad:"Ungültiger Code", sv_hint:"Leerer Platz = dieses Brett speichern / belegt = laden. Als Code zum Teilen oder Sichern." },
+    fr: { sv_save:"Enregistrer", sv_del:"Supprimer", sv_show:"Voir le code", sv_import:"Charger un code", sv_copy:"Copier", sv_load:"Charger", sv_saved:"Enregistré", sv_loaded:"Chargé", sv_bad:"Code invalide", sv_hint:"Emplacement vide = enregistrer ce plateau / rempli = charger. En code pour partager ou sauvegarder." },
+    es: { sv_save:"Guardar", sv_del:"Borrar", sv_show:"Ver código", sv_import:"Cargar código", sv_copy:"Copiar", sv_load:"Cargar", sv_saved:"Guardado", sv_loaded:"Cargado", sv_bad:"Código no válido", sv_hint:"Espacio vacío = guardar este tablero / lleno = cargar. Conviértelo en código para compartir o respaldar." },
+    it: { sv_save:"Salva", sv_del:"Elimina", sv_show:"Mostra codice", sv_import:"Carica codice", sv_copy:"Copia", sv_load:"Carica", sv_saved:"Salvato", sv_loaded:"Caricato", sv_bad:"Codice non valido", sv_hint:"Spazio vuoto = salva questo tavolo / pieno = carica. In codice per condividere o salvare." },
+    pt: { sv_save:"Salvar", sv_del:"Excluir", sv_show:"Ver código", sv_import:"Carregar código", sv_copy:"Copiar", sv_load:"Carregar", sv_saved:"Salvo", sv_loaded:"Carregado", sv_bad:"Código inválido", sv_hint:"Espaço vazio = salvar este tabuleiro / cheio = carregar. Em código para compartilhar ou fazer backup." },
+    nl: { sv_save:"Opslaan", sv_del:"Verwijderen", sv_show:"Code tonen", sv_import:"Code laden", sv_copy:"Kopiëren", sv_load:"Laden", sv_saved:"Opgeslagen", sv_loaded:"Geladen", sv_bad:"Ongeldige code", sv_hint:"Leeg vak = dit bord opslaan / gevuld = laden. Als code om te delen of back-uppen." },
+    sv: { sv_save:"Spara", sv_del:"Ta bort", sv_show:"Visa kod", sv_import:"Läs in kod", sv_copy:"Kopiera", sv_load:"Läs in", sv_saved:"Sparat", sv_loaded:"Inläst", sv_bad:"Ogiltig kod", sv_hint:"Tom plats = spara denna bräda / fylld = läs in. Som kod för att dela eller säkerhetskopiera." },
+    ko: { sv_save:"저장", sv_del:"삭제", sv_show:"코드 보기", sv_import:"코드로 불러오기", sv_copy:"복사", sv_load:"불러오기", sv_saved:"저장했어요", sv_loaded:"불러왔어요", sv_bad:"코드가 올바르지 않아요", sv_hint:"빈 칸=지금 판을 저장 / 채워진 칸=불러오기. 코드로 만들면 남에게 주거나 백업할 수 있어요." },
+    zh: { sv_save:"保存", sv_del:"删除", sv_show:"查看代码", sv_import:"用代码读取", sv_copy:"复制", sv_load:"读取", sv_saved:"已保存", sv_loaded:"已读取", sv_bad:"代码无效", sv_hint:"空格子=保存当前布局 / 已用格子=读取。做成代码即可赠送或备份。" },
+    ar: { sv_save:"حفظ", sv_del:"حذف", sv_show:"عرض الرمز", sv_import:"تحميل رمز", sv_copy:"نسخ", sv_load:"تحميل", sv_saved:"تم الحفظ", sv_loaded:"تم التحميل", sv_bad:"رمز غير صالح", sv_hint:"خانة فارغة = احفظ هذا اللوح / ممتلئة = حمّله. حوّله إلى رمز للمشاركة أو النسخ الاحتياطي." }
   };
   for (var _l3 in SAVEKEYS) { if (I18N[_l3]) { for (var _k3 in SAVEKEYS[_l3]) { I18N[_l3][_k3] = SAVEKEYS[_l3][_k3]; } } }
 
@@ -271,6 +271,15 @@
     ko:{ saveFail:"저장하지 못했어요" }, zh:{ saveFail:"无法保存" }, ar:{ saveFail:"تعذّر الحفظ" }
   };
   for (var _l5 in SAVEFAILKEYS) { if (I18N[_l5]) { for (var _k5 in SAVEFAILKEYS[_l5]) { I18N[_l5][_k5] = SAVEFAILKEYS[_l5][_k5]; } } }
+
+  /* つくるモードの「元に戻す」(消した・読み込んだ直後の数秒)と、保存の枠の「上書き」(2026-11-11)。全12言語。 */
+  var UNDOKEYS = {
+    ja:{ undo:"元に戻す", sv_ow:"上書き" }, en:{ undo:"Undo", sv_ow:"Overwrite" }, de:{ undo:"Rückgängig", sv_ow:"Überschreiben" },
+    fr:{ undo:"Annuler", sv_ow:"Écraser" }, es:{ undo:"Deshacer", sv_ow:"Sobrescribir" }, it:{ undo:"Annulla", sv_ow:"Sovrascrivi" },
+    pt:{ undo:"Desfazer", sv_ow:"Substituir" }, nl:{ undo:"Ongedaan maken", sv_ow:"Overschrijven" }, sv:{ undo:"Ångra", sv_ow:"Skriv över" },
+    ko:{ undo:"되돌리기", sv_ow:"덮어쓰기" }, zh:{ undo:"撤销", sv_ow:"覆盖" }, ar:{ undo:"تراجع", sv_ow:"استبدال" }
+  };
+  for (var _l6 in UNDOKEYS) { if (I18N[_l6]) { for (var _k6 in UNDOKEYS[_l6]) { I18N[_l6][_k6] = UNDOKEYS[_l6][_k6]; } } }
 
   /* 盤面コードの「コピー」の結果(2026-10-30)と、録音の残り時間(record.js・{t} に「4:48」など)。全12言語。 */
   var COPYRECKEYS = {
