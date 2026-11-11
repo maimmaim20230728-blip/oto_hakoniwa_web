@@ -1394,6 +1394,7 @@
   function slotStamp(){ var d=new Date(); function p(n){ return n<10?"0"+n:""+n; } return (d.getMonth()+1)+"/"+d.getDate()+" "+p(d.getHours())+":"+p(d.getMinutes()); }
   function showSlotInfo(i, s){
     var el=document.getElementById('slotInfo'); if(!el) return;
+    if(i<0){ el.textContent=''; return; }   // i<0 = 消す
     el.textContent=(i+1)+((s && typeof s.t==="string" && s.t) ? "  "+s.t.slice(0,20) : "");
   }
   // 「上書き」: 押したあと 入っている枠を 1回だけ タップすると 今の盤面で上書き(空き枠なら ふつうの保存)。つくるを出る・もう一度押す・戻るで解除
@@ -1405,7 +1406,7 @@
   }
   function onSlot(i){
     var a=loadSlots();
-    if(slotDelMode){ if(a[i]){ a[i]=null; saveSlots(a); renderSlots(); } return; }
+    if(slotDelMode){ if(a[i]){ a[i]=null; saveSlots(a); renderSlots(); showSlotInfo(-1, null); } return; }   // 消した枠の保存日を出しっぱなしにしない
     if(slotOvMode || !a[i]){
       setOvMode(false);
       a[i]={ c:b64(serializeBoard()), t:slotStamp() }; var okS=saveSlots(a); renderSlots(); flashMsg(okS?'sv_saved':'saveFail');   // 保存できなかったら「保存しました」は出さない
