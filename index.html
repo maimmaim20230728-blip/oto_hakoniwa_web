@@ -1148,7 +1148,12 @@
   }
 
   function start(){
-    if(!started){ initAudio(); started=true; barStart=ctx.currentTime; }
+    if(!started){
+      initAudio(); started=true; barStart=ctx.currentTime;
+      // はじめる前に点灯させた環境音・響きは、音の準備ができた今ここで鳴らし直す(点灯だけで無音になるのを防ぐ)
+      var ons=document.querySelectorAll("#ambSeg button.on");
+      for(var i=0;i<ons.length;i++){ var k=ons[i].getAttribute("data-amb"); if(AMB[k]){ try{ AMB[k](true); }catch(e){} } }
+    }
     document.getElementById("startOverlay").style.display="none";   // 起動後もはじめる=常にオーバーレイを閉じる
   }
   function backToTitle(){ document.getElementById("startOverlay").style.display=""; }   // 言語変更等のためタイトルへ戻る
